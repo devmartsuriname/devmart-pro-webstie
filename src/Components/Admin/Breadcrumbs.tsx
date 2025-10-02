@@ -13,12 +13,12 @@ const Breadcrumbs = () => {
   };
 
   return (
-    <nav className="flex items-center gap-2 text-sm">
+    <nav className="flex items-center gap-2 text-xs">
       <Link
         to="/admin"
-        className="text-[hsl(var(--admin-text-secondary))] hover:text-[hsl(var(--admin-brand-1))] transition-colors"
+        className="text-slate-400 hover:text-slate-200 transition-colors"
       >
-        <Home className="h-4 w-4" />
+        Home
       </Link>
       
       {pathnames.map((segment, index) => {
@@ -29,15 +29,15 @@ const Breadcrumbs = () => {
         
         return (
           <div key={path} className="flex items-center gap-2">
-            <ChevronRight className="h-4 w-4 text-[hsl(var(--admin-text-muted))]" />
+            <span className="text-slate-600">/</span>
             {isLast ? (
-              <span className="text-[hsl(var(--admin-text-primary))] font-medium">
+              <span className="text-slate-300 font-medium">
                 {getBreadcrumbLabel(segment)}
               </span>
             ) : (
               <Link
                 to={path}
-                className="text-[hsl(var(--admin-text-secondary))] hover:text-[hsl(var(--admin-brand-1))] transition-colors"
+                className="text-slate-400 hover:text-slate-200 transition-colors"
               >
                 {getBreadcrumbLabel(segment)}
               </Link>

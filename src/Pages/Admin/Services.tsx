@@ -134,121 +134,113 @@ const Services = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-2xl font-bold text-[hsl(var(--admin-text-primary))]">Services</h1>
-        <button
-          onClick={handleCreate}
-          className="admin-btn-primary flex items-center gap-2"
-        >
-          <Plus className="h-4 w-4" />
-          New Service
-        </button>
-      </div>
-
-      {/* Filters */}
-      <div className="admin-card p-4">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[hsl(var(--admin-text-muted))]" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search services..."
-              className="admin-input w-full pl-10"
-            />
-          </div>
-          
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="admin-input"
+      {/* Page Actions */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <nav className="text-xs text-slate-400">
+          <span className="hover:text-slate-200">Home</span>
+          <span className="mx-2 text-slate-600">/</span>
+          <span className="text-slate-300">Services</span>
+        </nav>
+        <div className="flex items-center gap-2">
+          <button className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-200 hover:bg-slate-700">Import</button>
+          <button className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-200 hover:bg-slate-700">Export</button>
+          <button
+            onClick={handleCreate}
+            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-500"
           >
-            <option value="all">All Status</option>
-            <option value="draft">Draft</option>
-            <option value="published">Published</option>
-            <option value="archived">Archived</option>
-          </select>
+            <Plus className="h-4 w-4" /> New
+          </button>
         </div>
       </div>
 
-      {/* Table */}
-      <div className="admin-card overflow-hidden">
-        {services.length === 0 ? (
-          <EmptyState
-            emoji="📋"
-            title="No services found"
-            description="Get started by creating your first service"
-            action={{
-              label: 'Create Service',
-              onClick: handleCreate,
-            }}
-          />
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="admin-table-header">
+      {/* Table Card */}
+      <div className="rounded-2xl border border-slate-800 bg-slate-900 shadow-sm">
+        {/* Header with Filters */}
+        <div className="border-b border-slate-800 p-4">
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <div>
+              <h2 className="text-base font-semibold text-slate-100">Services</h2>
+              <p className="text-sm text-slate-400">Manage your service offerings</p>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+              <input
+                type="text"
+                placeholder="Search services..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full pl-9 px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 text-sm"
+              />
+            </div>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/40 text-sm"
+            >
+              <option value="all">All Status</option>
+              <option value="draft">Draft</option>
+              <option value="published">Published</option>
+              <option value="archived">Archived</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Table */}
+        <div className="overflow-x-auto">
+          {services.length === 0 ? (
+            <div className="p-8">
+              <EmptyState
+                emoji="📋"
+                title="No services found"
+                description="Get started by creating your first service"
+                action={{
+                  label: 'Create Service',
+                  onClick: handleCreate,
+                }}
+              />
+            </div>
+          ) : (
+            <table className="w-full table-fixed border-collapse text-sm">
+              <thead className="sticky top-16 z-10 bg-slate-800 text-slate-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                    Title
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                    Category
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                    Updated
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider">
-                    Actions
-                  </th>
+                  <th className="w-2/5 border-b border-slate-700 px-3 py-2.5 text-left font-medium">Title</th>
+                  <th className="w-1/5 border-b border-slate-700 px-3 py-2.5 text-left font-medium">Category</th>
+                  <th className="w-1/5 border-b border-slate-700 px-3 py-2.5 text-left font-medium">Status</th>
+                  <th className="w-1/5 border-b border-slate-700 px-3 py-2.5 text-left font-medium">Updated</th>
+                  <th className="w-28 border-b border-slate-700 px-3 py-2.5 text-right font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {services.map((service) => (
-                  <tr key={service.id} className="admin-table-row">
-                    <td className="px-6 py-4">
-                      <div className="text-sm font-medium text-[hsl(var(--admin-text-primary))]">{service.title}</div>
-                      <div className="text-xs text-[hsl(var(--admin-text-secondary))]">/{service.slug}</div>
+                  <tr key={service.id} className="border-b border-slate-800 hover:bg-slate-800/60 transition-colors">
+                    <td className="px-3 py-2.5">
+                      <div className="text-sm font-medium text-slate-100">{service.title}</div>
+                      <div className="text-xs text-slate-500">/{service.slug}</div>
                     </td>
-                    <td className="px-6 py-4">
-                      <span className="text-sm text-[hsl(var(--admin-text-primary))]">{service.category || '-'}</span>
+                    <td className="px-3 py-2.5 text-slate-400 truncate">
+                      {service.category || '-'}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-3 py-2.5">
                       <StatusBadge status={service.status} />
                     </td>
-                    <td className="px-6 py-4 text-sm text-[hsl(var(--admin-text-secondary))]">
+                    <td className="px-3 py-2.5 text-slate-400">
                       {formatDate(service.updated_at)}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-3 py-2.5 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => handleEdit(service.id)}
-                          className="p-2 text-[hsl(var(--admin-text-secondary))] hover:text-[hsl(var(--admin-brand-1))] hover:bg-[hsl(var(--admin-bg-surface-elevated))] rounded-lg transition-colors"
-                          title="Edit"
+                          className="inline-flex items-center gap-1 rounded-md border border-slate-700 bg-slate-800 px-2 py-1 text-xs text-slate-200 hover:bg-slate-700"
                         >
-                          <Pencil className="h-4 w-4" />
-                        </button>
-                        <button
-                          onClick={() => handleArchive(service.id, service.status !== 'archived')}
-                          className="p-2 text-[hsl(var(--admin-text-secondary))] hover:text-[hsl(var(--admin-warning))] hover:bg-[hsl(var(--admin-warning))]/10 rounded-lg transition-colors"
-                          title={service.status === 'archived' ? 'Restore' : 'Archive'}
-                        >
-                          {service.status === 'archived' ? (
-                            <ArchiveRestore className="h-4 w-4" />
-                          ) : (
-                            <Archive className="h-4 w-4" />
-                          )}
+                          <Pencil className="h-3 w-3" /> Edit
                         </button>
                         <button
                           onClick={() => setDeleteDialog({ isOpen: true, id: service.id })}
-                          className="p-2 text-[hsl(var(--admin-text-secondary))] hover:text-[hsl(var(--admin-error))] hover:bg-[hsl(var(--admin-error))]/10 rounded-lg transition-colors"
-                          title="Delete"
+                          className="inline-flex items-center gap-1 rounded-md bg-rose-600/80 px-2 py-1 text-xs text-white hover:bg-rose-600"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-3 w-3" /> Delete
                         </button>
                       </div>
                     </td>
@@ -256,18 +248,27 @@ const Services = () => {
                 ))}
               </tbody>
             </table>
+          )}
+        </div>
+
+        {/* Footer */}
+        {services.length > 0 && (
+          <div className="flex items-center justify-between border-t border-slate-800 p-3 text-xs text-slate-400">
+            <div>Showing {services.length} services</div>
+            <div className="flex items-center gap-2">
+              <span>Rows per page:</span>
+              <button className="rounded-md border border-slate-700 bg-slate-800 px-2 py-1 hover:bg-slate-700">25</button>
+            </div>
           </div>
         )}
       </div>
 
-      {/* Drawer */}
       <ServiceDrawer
         isOpen={drawerOpen}
         onClose={handleDrawerClose}
         serviceId={editingService}
       />
 
-      {/* Delete Confirmation */}
       <ConfirmDialog
         isOpen={deleteDialog.isOpen}
         onClose={() => setDeleteDialog({ isOpen: false, id: null })}
