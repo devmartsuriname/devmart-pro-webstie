@@ -7,6 +7,8 @@ import Dashboard from '@/Pages/Admin/Dashboard';
 import Services from '@/Pages/Admin/Services';
 import Projects from '@/Pages/Admin/Projects';
 import Blog from '@/Pages/Admin/Blog';
+import Pricing from '@/Pages/Admin/Pricing';
+import FAQ from '@/Pages/Admin/FAQ';
 
 export const adminRoutes = [
   {
@@ -54,6 +56,22 @@ export const adminRoutes = [
         element: (
           <ProtectedRoute requiredRole={['admin', 'editor', 'author']}>
             <Blog />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'pricing',
+        element: (
+          <ProtectedRoute requiredRole={['admin', 'editor']}>
+            <Pricing />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'faq',
+        element: (
+          <ProtectedRoute requiredRole={['admin', 'editor']}>
+            <FAQ />
           </ProtectedRoute>
         ),
       },
