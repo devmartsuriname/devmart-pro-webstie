@@ -168,180 +168,244 @@ const ServiceFormPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[hsl(var(--admin-bg-base))]">
+    <div className="min-h-screen bg-[#0a0a0a]">
       {/* Header */}
-      <div className="border-b border-[hsl(var(--admin-border-subtle))] bg-[hsl(var(--admin-bg-elevated))]">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <header className="sticky top-0 z-10 border-b border-[#1f2937] bg-[#111827]/95 backdrop-blur-sm">
+        <div className="max-w-[1400px] mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link 
               to="/admin/services"
-              className="flex items-center gap-2 text-[hsl(var(--admin-text-muted))] hover:text-[hsl(var(--admin-text-primary))] transition-colors"
+              className="flex items-center gap-2 text-[#9ca3af] hover:text-white transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               <span className="text-sm font-medium">Back to Services</span>
             </Link>
-            <div className="w-px h-6 bg-[hsl(var(--admin-border-subtle))]" />
-            <h1 className="text-xl font-semibold text-[hsl(var(--admin-text-primary))]">
+            <div className="w-px h-6 bg-[#374151]" />
+            <h1 className="text-xl font-semibold text-white">
               {id ? 'Edit Service' : 'Create Service'}
             </h1>
           </div>
           <button
             onClick={handleSubmit(onSubmit)}
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2 bg-[#7CFF6B] hover:bg-[#6be85a] text-[#0a0a0a] font-medium rounded-lg transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 px-6 py-2.5 bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold rounded-lg transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Save className="h-4 w-4" />
             {loading ? 'Saving...' : 'Save Service'}
           </button>
         </div>
-      </div>
+      </header>
 
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-6 py-8">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          {/* Service Details Section */}
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-semibold text-[hsl(var(--admin-text-primary))] mb-1">Service Details</h2>
-              <p className="text-sm text-[hsl(var(--admin-text-muted))]">Configure the service information and content.</p>
-            </div>
+      <div className="max-w-[1400px] mx-auto px-6 py-8">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left Column - Main Details */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Service Details Card */}
+            <div className="bg-[#111827] border border-[#1f2937] rounded-xl shadow-xl overflow-hidden">
+              <div className="p-6 border-b border-[#1f2937]">
+                <h2 className="text-lg font-semibold text-white">Service Details</h2>
+                <p className="text-sm text-[#9ca3af] mt-1">Configure the service information and content.</p>
+              </div>
+              
+              <div className="p-6 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-[#d1d5db]">
+                      Service Title <span className="text-red-400">*</span>
+                    </label>
+                    <input 
+                      {...register('title')} 
+                      type="text" 
+                      className="w-full px-4 py-2.5 bg-[#1f2937] border border-[#374151] rounded-lg text-white placeholder:text-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent transition-all"
+                      placeholder="Enter service title" 
+                    />
+                    {errors.title && (
+                      <p className="text-xs text-red-400 mt-1">{errors.title.message}</p>
+                    )}
+                  </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormInput label="Service Title" required error={errors.title?.message}>
-                <input 
-                  {...register('title')} 
-                  type="text" 
-                  className="admin-input" 
-                  placeholder="Enter service title" 
-                />
-              </FormInput>
-
-              <FormInput 
-                label="URL Slug" 
-                required 
-                error={errors.slug?.message}
-                helperText="Will be used in URLs: /services/your-slug"
-              >
-                <SlugInput
-                  titleField={titleValue}
-                  value={slugValue}
-                  onChange={(value) => setValue('slug', value)}
-                  checkUnique={checkSlugUnique}
-                  currentId={id}
-                  placeholder="url-friendly-slug"
-                />
-              </FormInput>
-            </div>
-
-            <FormInput label="Status">
-              <Select value={currentStatus} onValueChange={(value) => setValue('status', value as ServiceFormData['status'], { shouldDirty: true })}>
-                <SelectTrigger className="admin-input">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="draft">Draft</SelectItem>
-                  <SelectItem value="published">Published</SelectItem>
-                  <SelectItem value="paused">Paused</SelectItem>
-                  <SelectItem value="archived">Archived</SelectItem>
-                </SelectContent>
-              </Select>
-            </FormInput>
-
-            <FormInput 
-              label="Service Excerpt" 
-              error={errors.short_desc?.message}
-              helperText="This short description will appear in service listings and search results."
-            >
-              <textarea 
-                {...register('short_desc')} 
-                rows={4} 
-                maxLength={280} 
-                className="admin-input resize-none" 
-                placeholder="Brief description of the service for listings and previews" 
-              />
-            </FormInput>
-
-            <FormInput label="Service Content" helperText="Detailed service description with rich formatting">
-              <RichTextEditor
-                content={contentValue || ''}
-                onChange={(value) => setValue('content_richtext', value, { shouldDirty: true })}
-              />
-            </FormInput>
-          </div>
-
-          {/* Additional Options Section */}
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-semibold text-[hsl(var(--admin-text-primary))] mb-1">Additional Options</h2>
-              <p className="text-sm text-[hsl(var(--admin-text-muted))]">Category, pricing, and display settings.</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormInput label="Service Category" helperText="Helps organize services">
-                <input
-                  {...register('category')}
-                  type="text"
-                  className="admin-input"
-                  placeholder="e.g. Marketing, Development"
-                />
-              </FormInput>
-
-              <FormInput label="Starting Price" helperText="Optional starting price">
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[hsl(var(--admin-text-muted))]">₹</span>
-                  <input
-                    {...register('price_from', { valueAsNumber: true, setValueAs: v => v === '' ? null : Number(v) })}
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    className="admin-input pl-8"
-                    placeholder="999.00"
-                  />
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-[#d1d5db]">
+                      URL Slug <span className="text-red-400">*</span>
+                    </label>
+                    <SlugInput
+                      titleField={titleValue}
+                      value={slugValue}
+                      onChange={(value) => setValue('slug', value)}
+                      checkUnique={checkSlugUnique}
+                      currentId={id}
+                      placeholder="url-friendly-slug"
+                    />
+                    {errors.slug && (
+                      <p className="text-xs text-red-400 mt-1">{errors.slug.message}</p>
+                    )}
+                    <p className="text-xs text-[#6b7280]">Will be used in URLs: /services/your-slug</p>
+                  </div>
                 </div>
-              </FormInput>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-[#d1d5db]">Status</label>
+                  <Select value={currentStatus} onValueChange={(value) => setValue('status', value as ServiceFormData['status'], { shouldDirty: true })}>
+                    <SelectTrigger className="w-full px-4 py-2.5 bg-[#1f2937] border border-[#374151] rounded-lg text-white focus:ring-2 focus:ring-[#3b82f6]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="draft">Draft</SelectItem>
+                      <SelectItem value="published">Published</SelectItem>
+                      <SelectItem value="paused">Paused</SelectItem>
+                      <SelectItem value="archived">Archived</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-[#d1d5db]">Service Excerpt</label>
+                  <textarea 
+                    {...register('short_desc')} 
+                    rows={4} 
+                    maxLength={280} 
+                    className="w-full px-4 py-2.5 bg-[#1f2937] border border-[#374151] rounded-lg text-white placeholder:text-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent transition-all resize-none"
+                    placeholder="Brief description of the service for listings and previews" 
+                  />
+                  <div className="flex justify-between text-xs">
+                    <p className="text-[#6b7280]">This short description will appear in service listings and search results.</p>
+                    <p className="text-[#6b7280]">{shortDescValue?.length || 0}/280</p>
+                  </div>
+                  {errors.short_desc && (
+                    <p className="text-xs text-red-400">{errors.short_desc.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-[#d1d5db]">Service Content</label>
+                  <div className="rounded-lg overflow-hidden border border-[#374151]">
+                    <RichTextEditor
+                      content={contentValue || ''}
+                      onChange={(value) => setValue('content_richtext', value, { shouldDirty: true })}
+                    />
+                  </div>
+                  <p className="text-xs text-[#6b7280]">Detailed service description with rich formatting</p>
+                </div>
+              </div>
             </div>
 
-            <FormInput label="Display Order" helperText="Lower numbers appear first">
-              <input 
-                {...register('order', { valueAsNumber: true })} 
-                type="number" 
-                min="0" 
-                className="admin-input w-32" 
-                placeholder="0" 
-              />
-            </FormInput>
+            {/* SEO Settings Card */}
+            <div className="bg-[#111827] border border-[#1f2937] rounded-xl shadow-xl overflow-hidden">
+              <div className="p-6 border-b border-[#1f2937]">
+                <h2 className="text-lg font-semibold text-white">SEO Settings</h2>
+                <p className="text-sm text-[#9ca3af] mt-1">Optimize for search engines.</p>
+              </div>
+              
+              <div className="p-6 space-y-5">
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-[#d1d5db]">SEO Title</label>
+                  <input 
+                    {...register('seo_title')} 
+                    type="text" 
+                    maxLength={60} 
+                    className="w-full px-4 py-2.5 bg-[#1f2937] border border-[#374151] rounded-lg text-white placeholder:text-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent transition-all"
+                    placeholder="SEO-optimized title" 
+                  />
+                  <p className="text-xs text-[#6b7280]">Custom title for search engines (leave blank to use service title)</p>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-[#d1d5db]">Meta Description</label>
+                  <textarea 
+                    {...register('seo_description')} 
+                    rows={3} 
+                    maxLength={160} 
+                    className="w-full px-4 py-2.5 bg-[#1f2937] border border-[#374151] rounded-lg text-white placeholder:text-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent transition-all resize-none"
+                    placeholder="Brief description for search results..." 
+                  />
+                  <div className="flex justify-between">
+                    <p className="text-xs text-red-400">{errors.seo_description?.message}</p>
+                    <p className="text-xs text-[#6b7280]">{watch('seo_description')?.length || 0}/160</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* SEO Section */}
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-semibold text-[hsl(var(--admin-text-primary))] mb-1">SEO Settings</h2>
-              <p className="text-sm text-[hsl(var(--admin-text-muted))]">Optimize for search engines.</p>
+          {/* Right Column - Sidebar */}
+          <div className="lg:col-span-1 space-y-6">
+            {/* Additional Options Card */}
+            <div className="bg-[#111827] border border-[#1f2937] rounded-xl shadow-xl overflow-hidden">
+              <div className="p-6 border-b border-[#1f2937]">
+                <h2 className="text-lg font-semibold text-white">Additional Options</h2>
+                <p className="text-sm text-[#9ca3af] mt-1">Category, pricing, and display.</p>
+              </div>
+              
+              <div className="p-6 space-y-5">
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-[#d1d5db]">Category</label>
+                  <input
+                    {...register('category')}
+                    type="text"
+                    className="w-full px-4 py-2.5 bg-[#1f2937] border border-[#374151] rounded-lg text-white placeholder:text-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent transition-all"
+                    placeholder="e.g. Marketing, Development"
+                  />
+                  <p className="text-xs text-[#6b7280]">Helps organize services</p>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-[#d1d5db]">Starting Price</label>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9ca3af] font-medium">₹</span>
+                    <input
+                      {...register('price_from', { valueAsNumber: true, setValueAs: v => v === '' ? null : Number(v) })}
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      className="w-full pl-9 pr-4 py-2.5 bg-[#1f2937] border border-[#374151] rounded-lg text-white placeholder:text-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent transition-all"
+                      placeholder="999.00"
+                    />
+                  </div>
+                  <p className="text-xs text-[#6b7280]">Optional starting price</p>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-[#d1d5db]">Display Order</label>
+                  <input 
+                    {...register('order', { valueAsNumber: true })} 
+                    type="number" 
+                    min="0" 
+                    className="w-full px-4 py-2.5 bg-[#1f2937] border border-[#374151] rounded-lg text-white placeholder:text-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent transition-all"
+                    placeholder="0" 
+                  />
+                  <p className="text-xs text-[#6b7280]">Lower numbers appear first</p>
+                </div>
+              </div>
             </div>
 
-            <FormInput label="SEO Title" helperText="Custom title for search engines (leave blank to use service title)">
-              <input 
-                {...register('seo_title')} 
-                type="text" 
-                maxLength={60} 
-                className="admin-input" 
-                placeholder="SEO-optimized title" 
-              />
-            </FormInput>
-
-            <FormInput 
-              label="Meta Description" 
-              error={errors.seo_description?.message} 
-              helperText={`${watch('seo_description')?.length || 0}/160 characters`}
-            >
-              <textarea 
-                {...register('seo_description')} 
-                rows={3} 
-                maxLength={160} 
-                className="admin-input resize-none" 
-                placeholder="Brief description for search results..." 
-              />
-            </FormInput>
+            {/* Quick Info Card */}
+            {id && (
+              <div className="bg-[#111827] border border-[#1f2937] rounded-xl shadow-xl overflow-hidden">
+                <div className="p-6">
+                  <h3 className="text-sm font-semibold text-[#d1d5db] mb-3">Quick Info</h3>
+                  <div className="space-y-2 text-xs">
+                    <div className="flex justify-between py-2 border-b border-[#1f2937]">
+                      <span className="text-[#9ca3af]">Status</span>
+                      <span className={`font-medium px-2 py-0.5 rounded ${
+                        currentStatus === 'published' ? 'bg-green-500/10 text-green-400' :
+                        currentStatus === 'draft' ? 'bg-gray-500/10 text-gray-400' :
+                        currentStatus === 'paused' ? 'bg-yellow-500/10 text-yellow-400' :
+                        'bg-red-500/10 text-red-400'
+                      }`}>
+                        {currentStatus}
+                      </span>
+                    </div>
+                    {slugValue && (
+                      <div className="pt-2">
+                        <span className="text-[#9ca3af] block mb-1">Public URL</span>
+                        <code className="text-[#3b82f6] text-xs break-all">/services/{slugValue}</code>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </form>
       </div>
