@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { Pencil, Trash2, Plus, Loader2 } from 'lucide-react';
 import { TableCard } from '@/Components/Admin/TableCard';
 import PricingDrawer from '@/Components/Admin/PricingDrawer';
-import { ConfirmDialog } from '@/Components/Admin/ConfirmDialog';
+import ConfirmDialog from '@/Components/Admin/ConfirmDialog';
 
 interface PricingPlan {
   id: string;

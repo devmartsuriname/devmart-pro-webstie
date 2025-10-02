@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { Pencil, Trash2, Plus, Loader2 } from 'lucide-react';
 import { TableCard } from '@/Components/Admin/TableCard';
 import FAQDrawer from '@/Components/Admin/FAQDrawer';
-import { ConfirmDialog } from '@/Components/Admin/ConfirmDialog';
+import ConfirmDialog from '@/Components/Admin/ConfirmDialog';
 
 interface FAQ {
   id: string;
@@ -198,7 +198,7 @@ const FAQ = () => {
         onClose={() => setDeleteDialog({ open: false, id: null })}
         onConfirm={() => deleteDialog.id && handleDelete(deleteDialog.id)}
         title="Delete FAQ"
-        message="Are you sure you want to delete this FAQ? This action cannot be undone."
+        description="Are you sure you want to delete this FAQ? This action cannot be undone."
       />
     </div>
   );
