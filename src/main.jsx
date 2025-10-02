@@ -6,6 +6,7 @@ import {
 import { router } from './Routes/Routes.jsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
+import { ThemeProvider } from './lib/theme-context';
 import "slick-carousel/slick/slick.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -22,9 +23,11 @@ const queryClient = new QueryClient({
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <Toaster position="top-right" richColors />
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <Toaster position="top-right" richColors />
+      </QueryClientProvider>
+    </ThemeProvider>
   </StrictMode>,
 )

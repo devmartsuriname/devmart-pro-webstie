@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { slugify } from '@/lib/utils';
 import { RefreshCw } from 'lucide-react';
-import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
 interface SlugInputProps {
   titleField: string;
@@ -53,13 +52,13 @@ const SlugInput = ({ titleField, value, onChange, checkUnique, currentId }: Slug
             setManuallyEdited(true);
             onChange(slugify(e.target.value));
           }}
-          className="flex-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+          className="admin-input flex-1"
           placeholder="auto-generated-slug"
         />
         <button
           type="button"
           onClick={handleReset}
-          className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg"
+          className="p-2 text-[hsl(var(--admin-text-secondary))] hover:text-[hsl(var(--admin-text-primary))] hover:bg-[hsl(var(--admin-bg-surface-elevated))] rounded-lg transition-colors"
           title="Reset to auto-generated"
         >
           <RefreshCw className="h-4 w-4" />
@@ -67,15 +66,15 @@ const SlugInput = ({ titleField, value, onChange, checkUnique, currentId }: Slug
       </div>
       
       {isChecking && (
-        <p className="text-xs text-gray-500">Checking availability...</p>
+        <p className="text-xs text-[hsl(var(--admin-text-muted))]">Checking availability...</p>
       )}
       
       {isUnique === false && (
-        <p className="text-xs text-red-600">This slug is already in use</p>
+        <p className="text-xs text-[hsl(var(--admin-error))]">This slug is already in use</p>
       )}
       
       {isUnique === true && (
-        <p className="text-xs text-green-600">Slug is available</p>
+        <p className="text-xs text-[hsl(var(--admin-success))]">Slug is available</p>
       )}
     </div>
   );

@@ -9,9 +9,9 @@ interface StatusBadgeProps {
 
 const StatusBadge = ({ status, className }: StatusBadgeProps) => {
   const variants = {
-    draft: 'bg-gray-100 text-gray-700',
-    published: 'bg-green-100 text-green-700',
-    archived: 'bg-amber-100 text-amber-700',
+    draft: 'bg-[hsl(var(--admin-text-muted))]/20 text-[hsl(var(--admin-text-secondary))]',
+    published: 'bg-[hsl(var(--admin-success))]/20 text-[hsl(var(--admin-success))]',
+    archived: 'bg-[hsl(var(--admin-warning))]/20 text-[hsl(var(--admin-warning))]',
   };
 
   return (

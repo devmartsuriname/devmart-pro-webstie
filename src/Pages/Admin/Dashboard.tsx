@@ -38,22 +38,22 @@ const Dashboard = () => {
   };
 
   const cards = [
-    { title: 'Services', value: stats.services, icon: Briefcase, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { title: 'Projects', value: stats.projects, icon: FolderKanban, color: 'text-green-600', bg: 'bg-green-50' },
-    { title: 'Blog Posts', value: stats.posts, icon: FileText, color: 'text-purple-600', bg: 'bg-purple-50' },
-    { title: 'Categories', value: stats.categories, icon: Tag, color: 'text-orange-600', bg: 'bg-orange-50' },
+    { title: 'Services', value: stats.services, icon: Briefcase, gradient: 'from-blue-500 to-blue-600' },
+    { title: 'Projects', value: stats.projects, icon: FolderKanban, gradient: 'from-green-500 to-green-600' },
+    { title: 'Blog Posts', value: stats.posts, icon: FileText, gradient: 'from-purple-500 to-purple-600' },
+    { title: 'Categories', value: stats.categories, icon: Tag, gradient: 'from-orange-500 to-orange-600' },
   ];
 
   if (loading) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-[hsl(var(--admin-text-primary))]">Dashboard</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="bg-white rounded-2xl shadow-sm p-6 animate-pulse">
-              <div className="h-12 w-12 bg-gray-200 rounded-lg mb-4"></div>
-              <div className="h-4 bg-gray-200 rounded w-20 mb-2"></div>
-              <div className="h-8 bg-gray-200 rounded w-16"></div>
+            <div key={i} className="admin-card p-6">
+              <div className="admin-skeleton h-12 w-12 rounded-lg mb-4"></div>
+              <div className="admin-skeleton h-4 rounded w-20 mb-2"></div>
+              <div className="admin-skeleton h-8 rounded w-16"></div>
             </div>
           ))}
         </div>
@@ -64,36 +64,36 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600 mt-1">Welcome to your CMS admin panel</p>
+        <h1 className="text-2xl font-bold text-[hsl(var(--admin-text-primary))]">Dashboard</h1>
+        <p className="text-[hsl(var(--admin-text-secondary))] mt-1">Welcome to your CMS admin panel</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {cards.map((card) => (
-          <div key={card.title} className="bg-white rounded-2xl shadow-sm p-6">
-            <div className={`${card.bg} ${card.color} h-12 w-12 rounded-lg flex items-center justify-center mb-4`}>
-              <card.icon className="h-6 w-6" />
+          <div key={card.title} className="admin-card p-6">
+            <div className={`bg-gradient-to-br ${card.gradient} h-12 w-12 rounded-lg flex items-center justify-center mb-4`}>
+              <card.icon className="h-6 w-6 text-white" />
             </div>
-            <p className="text-sm text-gray-600 font-medium">{card.title}</p>
-            <p className="text-3xl font-bold text-gray-900 mt-1">{card.value}</p>
+            <p className="text-sm text-[hsl(var(--admin-text-secondary))] font-medium">{card.title}</p>
+            <p className="text-3xl font-bold text-[hsl(var(--admin-text-primary))] mt-1">{card.value}</p>
           </div>
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+      <div className="admin-card p-6">
+        <h2 className="text-lg font-semibold text-[hsl(var(--admin-text-primary))] mb-4">Quick Actions</h2>
         <div className="space-y-2">
-          <a href="/admin/services" className="block px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors">
-            <p className="font-medium text-gray-900">Manage Services</p>
-            <p className="text-sm text-gray-600">Create, edit, and organize services</p>
+          <a href="/admin/services" className="block px-4 py-3 rounded-lg hover:bg-[hsl(var(--admin-bg-hover))] transition-colors">
+            <p className="font-medium text-[hsl(var(--admin-text-primary))]">Manage Services</p>
+            <p className="text-sm text-[hsl(var(--admin-text-secondary))]">Create, edit, and organize services</p>
           </a>
-          <a href="/admin/projects" className="block px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors">
-            <p className="font-medium text-gray-900">Manage Projects</p>
-            <p className="text-sm text-gray-600">Showcase your portfolio work</p>
+          <a href="/admin/projects" className="block px-4 py-3 rounded-lg hover:bg-[hsl(var(--admin-bg-hover))] transition-colors">
+            <p className="font-medium text-[hsl(var(--admin-text-primary))]">Manage Projects</p>
+            <p className="text-sm text-[hsl(var(--admin-text-secondary))]">Showcase your portfolio work</p>
           </a>
-          <a href="/admin/blog" className="block px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors">
-            <p className="font-medium text-gray-900">Write Blog Posts</p>
-            <p className="text-sm text-gray-600">Share insights and updates</p>
+          <a href="/admin/blog" className="block px-4 py-3 rounded-lg hover:bg-[hsl(var(--admin-bg-hover))] transition-colors">
+            <p className="font-medium text-[hsl(var(--admin-text-primary))]">Write Blog Posts</p>
+            <p className="text-sm text-[hsl(var(--admin-text-secondary))]">Share insights and updates</p>
           </a>
         </div>
       </div>

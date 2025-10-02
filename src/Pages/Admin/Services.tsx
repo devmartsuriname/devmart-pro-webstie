@@ -114,15 +114,15 @@ const Services = () => {
     return (
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Services</h1>
+          <h1 className="text-2xl font-bold text-[hsl(var(--admin-text-primary))]">Services</h1>
         </div>
-        <div className="bg-white rounded-2xl shadow-sm p-6">
+        <div className="admin-card p-6">
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="animate-pulse flex gap-4">
+              <div key={i} className="flex gap-4">
                 <div className="flex-1 space-y-2">
-                  <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-                  <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                  <div className="admin-skeleton h-4 rounded w-1/4"></div>
+                  <div className="admin-skeleton h-3 rounded w-1/2"></div>
                 </div>
               </div>
             ))}
@@ -136,10 +136,10 @@ const Services = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-2xl font-bold text-gray-900">Services</h1>
+        <h1 className="text-2xl font-bold text-[hsl(var(--admin-text-primary))]">Services</h1>
         <button
           onClick={handleCreate}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90"
+          className="admin-btn-primary flex items-center gap-2"
         >
           <Plus className="h-4 w-4" />
           New Service
@@ -147,23 +147,23 @@ const Services = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl shadow-sm p-4">
+      <div className="admin-card p-4">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[hsl(var(--admin-text-muted))]" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search services..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="admin-input w-full pl-10"
             />
           </div>
           
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="admin-input"
           >
             <option value="all">All Status</option>
             <option value="draft">Draft</option>
@@ -174,7 +174,7 @@ const Services = () => {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+      <div className="admin-card overflow-hidden">
         {services.length === 0 ? (
           <EmptyState
             emoji="📋"
@@ -188,53 +188,53 @@ const Services = () => {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
+              <thead className="admin-table-header">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                     Title
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                     Category
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                     Updated
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody>
                 {services.map((service) => (
-                  <tr key={service.id} className="hover:bg-gray-50">
+                  <tr key={service.id} className="admin-table-row">
                     <td className="px-6 py-4">
-                      <div className="text-sm font-medium text-gray-900">{service.title}</div>
-                      <div className="text-xs text-gray-500">/{service.slug}</div>
+                      <div className="text-sm font-medium text-[hsl(var(--admin-text-primary))]">{service.title}</div>
+                      <div className="text-xs text-[hsl(var(--admin-text-secondary))]">/{service.slug}</div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-sm text-gray-900">{service.category || '-'}</span>
+                      <span className="text-sm text-[hsl(var(--admin-text-primary))]">{service.category || '-'}</span>
                     </td>
                     <td className="px-6 py-4">
                       <StatusBadge status={service.status} />
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">
+                    <td className="px-6 py-4 text-sm text-[hsl(var(--admin-text-secondary))]">
                       {formatDate(service.updated_at)}
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => handleEdit(service.id)}
-                          className="p-2 text-gray-600 hover:text-primary hover:bg-gray-100 rounded-lg"
+                          className="p-2 text-[hsl(var(--admin-text-secondary))] hover:text-[hsl(var(--admin-brand-1))] hover:bg-[hsl(var(--admin-bg-surface-elevated))] rounded-lg transition-colors"
                           title="Edit"
                         >
                           <Pencil className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => handleArchive(service.id, service.status !== 'archived')}
-                          className="p-2 text-gray-600 hover:text-amber-600 hover:bg-amber-50 rounded-lg"
+                          className="p-2 text-[hsl(var(--admin-text-secondary))] hover:text-[hsl(var(--admin-warning))] hover:bg-[hsl(var(--admin-warning))]/10 rounded-lg transition-colors"
                           title={service.status === 'archived' ? 'Restore' : 'Archive'}
                         >
                           {service.status === 'archived' ? (
@@ -245,7 +245,7 @@ const Services = () => {
                         </button>
                         <button
                           onClick={() => setDeleteDialog({ isOpen: true, id: service.id })}
-                          className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg"
+                          className="p-2 text-[hsl(var(--admin-text-secondary))] hover:text-[hsl(var(--admin-error))] hover:bg-[hsl(var(--admin-error))]/10 rounded-lg transition-colors"
                           title="Delete"
                         >
                           <Trash2 className="h-4 w-4" />

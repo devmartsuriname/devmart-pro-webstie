@@ -1,0 +1,114 @@
+/* Admin CMS Dark Theme Design System */
+
+:root.dark {
+  /* Brand Colors (HSL) */
+  --admin-brand-1: 217 91% 60%; /* #3b82f6 blue */
+  --admin-brand-2: 20 95% 53%; /* #f97316 orange */
+  
+  /* Background Colors */
+  --admin-bg-base: 222 47% 11%; /* #0f172a slate-950 */
+  --admin-bg-surface: 215 28% 17%; /* slate-900 */
+  --admin-bg-surface-elevated: 215 20% 23%; /* slate-800 */
+  --admin-bg-hover: 215 20% 23% / 0.5; /* slate-800/50 */
+  
+  /* Text Colors */
+  --admin-text-primary: 210 20% 98%; /* slate-100 */
+  --admin-text-secondary: 215 16% 47%; /* slate-400 */
+  --admin-text-muted: 215 14% 34%; /* slate-500 */
+  
+  /* Border Colors */
+  --admin-border: 215 19% 35%; /* slate-700 */
+  --admin-border-elevated: 215 25% 27%; /* slate-800 */
+  
+  /* Status Colors */
+  --admin-success: 142 71% 45%; /* green-600 */
+  --admin-warning: 38 92% 50%; /* amber-500 */
+  --admin-error: 347 77% 50%; /* rose-600 */
+  --admin-info: 199 89% 48%; /* cyan-600 */
+  
+  /* Shadows */
+  --admin-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3);
+  --admin-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+}
+
+:root.light {
+  --admin-brand-1: 217 91% 60%;
+  --admin-brand-2: 20 95% 53%;
+  --admin-bg-base: 0 0% 100%;
+  --admin-bg-surface: 210 20% 98%;
+  --admin-bg-surface-elevated: 214 32% 91%;
+  --admin-bg-hover: 214 32% 91% / 0.5;
+  --admin-text-primary: 222 47% 11%;
+  --admin-text-secondary: 215 16% 47%;
+  --admin-text-muted: 215 20% 65%;
+  --admin-border: 214 32% 91%;
+  --admin-border-elevated: 215 28% 85%;
+  --admin-success: 142 71% 45%;
+  --admin-warning: 38 92% 50%;
+  --admin-error: 347 77% 50%;
+  --admin-info: 199 89% 48%;
+  --admin-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  --admin-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+/* Admin-specific utilities */
+.admin-card {
+  @apply bg-[hsl(var(--admin-bg-surface))] border border-[hsl(var(--admin-border))] rounded-2xl shadow-[var(--admin-shadow)];
+}
+
+.admin-input {
+  @apply bg-[hsl(var(--admin-bg-surface-elevated))] border border-[hsl(var(--admin-border))] text-[hsl(var(--admin-text-primary))] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--admin-brand-1))]/50 focus:border-[hsl(var(--admin-brand-1))];
+}
+
+.admin-label {
+  @apply block text-sm font-medium text-[hsl(var(--admin-text-secondary))] mb-1;
+}
+
+.admin-btn-primary {
+  @apply bg-[hsl(var(--admin-brand-1))] hover:bg-[hsl(var(--admin-brand-1))]/80 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[hsl(var(--admin-brand-1))]/50;
+}
+
+.admin-btn-secondary {
+  @apply bg-[hsl(var(--admin-bg-surface-elevated))] border border-[hsl(var(--admin-border))] text-[hsl(var(--admin-text-primary))] hover:bg-[hsl(var(--admin-bg-surface-elevated))]/80 px-4 py-2 rounded-lg text-sm font-medium transition-colors;
+}
+
+.admin-btn-destructive {
+  @apply bg-[hsl(var(--admin-error))] hover:bg-[hsl(var(--admin-error))]/80 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors;
+}
+
+.admin-table-header {
+  @apply bg-[hsl(var(--admin-bg-surface-elevated))] text-[hsl(var(--admin-text-secondary))] sticky top-0 z-10;
+}
+
+.admin-table-row {
+  @apply hover:bg-[hsl(var(--admin-bg-hover))] transition-colors border-b border-[hsl(var(--admin-border))];
+}
+
+.admin-sidebar-link {
+  @apply flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors text-[hsl(var(--admin-text-secondary))] hover:bg-[hsl(var(--admin-bg-surface-elevated))] hover:text-[hsl(var(--admin-text-primary))];
+}
+
+.admin-sidebar-link-active {
+  @apply bg-[hsl(var(--admin-bg-surface-elevated))] text-[hsl(var(--admin-brand-1))] font-semibold;
+}
+
+/* Skeleton animations */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.admin-skeleton {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--admin-bg-surface-elevated)) 0%,
+    hsl(var(--admin-bg-hover)) 50%,
+    hsl(var(--admin-bg-surface-elevated)) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}

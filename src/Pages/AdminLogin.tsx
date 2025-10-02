@@ -19,7 +19,7 @@ const AdminLogin = () => {
   const { signIn, signUp, user, loading } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [mode, setMode] = useState<'login' | 'signup'>('login');
-  
+
   const { register, handleSubmit, formState: { errors }, reset } = useForm<AuthForm>({
     resolver: zodResolver(authSchema),
   });
@@ -59,25 +59,29 @@ const AdminLogin = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--admin-bg-base))]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--admin-brand-1))]"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--admin-bg-base))] px-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
           {mode === 'login' ? (
-            <LogIn className="mx-auto h-12 w-12 text-primary" />
+            <div className="mx-auto h-12 w-12 rounded-lg bg-[hsl(var(--admin-brand-1))]/20 flex items-center justify-center">
+              <LogIn className="h-6 w-6 text-[hsl(var(--admin-brand-1))]" />
+            </div>
           ) : (
-            <UserPlus className="mx-auto h-12 w-12 text-primary" />
+            <div className="mx-auto h-12 w-12 rounded-lg bg-[hsl(var(--admin-brand-2))]/20 flex items-center justify-center">
+              <UserPlus className="h-6 w-6 text-[hsl(var(--admin-brand-2))]" />
+            </div>
           )}
-          <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
+          <h2 className="mt-6 text-3xl font-bold tracking-tight text-[hsl(var(--admin-text-primary))]">
             {mode === 'login' ? 'Admin Login' : 'Create Admin Account'}
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-sm text-[hsl(var(--admin-text-secondary))]">
             {mode === 'login' 
               ? 'Sign in to access the CMS' 
               : 'Register your first admin account'}
@@ -85,9 +89,9 @@ const AdminLogin = () => {
         </div>
         
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">
-          <div className="space-y-4 rounded-2xl bg-white p-8 shadow-sm">
+          <div className="admin-card p-8 space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="admin-label">
                 Email
               </label>
               <input
@@ -95,15 +99,15 @@ const AdminLogin = () => {
                 id="email"
                 type="email"
                 autoComplete="email"
-                className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="admin-input w-full"
               />
               {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+                <p className="mt-1 text-sm text-[hsl(var(--admin-error))]">{errors.email.message}</p>
               )}
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="admin-label">
                 Password
               </label>
               <input
@@ -111,10 +115,10 @@ const AdminLogin = () => {
                 id="password"
                 type="password"
                 autoComplete="current-password"
-                className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="admin-input w-full"
               />
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+                <p className="mt-1 text-sm text-[hsl(var(--admin-error))]">{errors.password.message}</p>
               )}
             </div>
           </div>
@@ -122,7 +126,7 @@ const AdminLogin = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
+            className="admin-btn-primary w-full py-3 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting 
               ? (mode === 'login' ? 'Signing in...' : 'Creating account...') 
@@ -136,7 +140,7 @@ const AdminLogin = () => {
                 setMode(mode === 'login' ? 'signup' : 'login');
                 reset();
               }}
-              className="text-sm text-primary hover:text-primary/80"
+              className="text-sm text-[hsl(var(--admin-brand-1))] hover:text-[hsl(var(--admin-brand-1))]/80 transition-colors"
             >
               {mode === 'login' 
                 ? 'Need an account? Sign up' 

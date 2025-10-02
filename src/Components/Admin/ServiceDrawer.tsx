@@ -34,8 +34,9 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
-  const { register, handleSubmit, formState: { errors }, reset, watch, setValue } = useForm<ServiceForm>({
+  const { register, handleSubmit, formState: { errors, isDirty }, reset, watch, setValue } = useForm<ServiceForm>({
     resolver: zodResolver(serviceSchema),
     defaultValues: {
       status: 'draft',
@@ -45,8 +46,11 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
 
   const titleValue = watch('title');
   const slugValue = watch('slug');
-  const statusValue = watch('status');
   const galleryValue = watch('gallery_urls');
+
+  useEffect(() => {
+    setHasUnsavedChanges(isDirty);
+  }, [isDirty]);
 
   useEffect(() => {
     if (isOpen && serviceId) {
@@ -56,6 +60,7 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
         status: 'draft',
         gallery_urls: [],
       });
+      setHasUnsavedChanges(false);
     }
   }, [isOpen, serviceId]);
 
@@ -84,6 +89,7 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
         seo_title: data.seo_title || '',
         seo_description: data.seo_description || '',
       });
+      setHasUnsavedChanges(false);
     } catch (error: any) {
       toast.error(error.message);
     } finally {
@@ -105,6 +111,16 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
 
     const { data } = await query;
     return !data || data.length === 0;
+  };
+
+  const handleClose = () => {
+    if (hasUnsavedChanges) {
+      if (confirm('You have unsaved changes. Are you sure you want to close?')) {
+        onClose();
+      }
+    } else {
+      onClose();
+    }
   };
 
   const onSubmit = async (data: ServiceForm) => {
@@ -135,6 +151,7 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
         toast.success('Service created');
       }
 
+      setHasUnsavedChanges(false);
       onClose();
     } catch (error: any) {
       toast.error(error.message);
@@ -147,19 +164,19 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={handleClose} />
       
-      <div className="absolute right-0 top-0 h-full w-full max-w-2xl bg-white shadow-xl">
+      <div className="absolute right-0 top-0 h-full w-full max-w-2xl bg-[hsl(var(--admin-bg-surface))] border-l border-[hsl(var(--admin-border))] shadow-[var(--admin-shadow-lg)] animate-slide-in-right">
         <form onSubmit={handleSubmit(onSubmit)} className="h-full flex flex-col">
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-[hsl(var(--admin-border-elevated))]">
+            <h2 className="text-lg font-semibold text-[hsl(var(--admin-text-primary))]">
               {serviceId ? 'Edit Service' : 'New Service'}
             </h2>
             <button
               type="button"
-              onClick={onClose}
-              className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg"
+              onClick={handleClose}
+              className="p-2 text-[hsl(var(--admin-text-secondary))] hover:text-[hsl(var(--admin-text-primary))] hover:bg-[hsl(var(--admin-bg-surface-elevated))] rounded-lg transition-colors"
             >
               <X className="h-5 w-5" />
             </button>
@@ -170,9 +187,9 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
             {initialLoading ? (
               <div className="space-y-4">
                 {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="animate-pulse">
-                    <div className="h-4 bg-gray-200 rounded w-24 mb-2"></div>
-                    <div className="h-10 bg-gray-200 rounded"></div>
+                  <div key={i}>
+                    <div className="admin-skeleton h-4 rounded w-24 mb-2"></div>
+                    <div className="admin-skeleton h-10 rounded"></div>
                   </div>
                 ))}
               </div>
@@ -180,26 +197,26 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
               <>
                 {/* Basics */}
                 <section className="space-y-4">
-                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
+                  <h3 className="text-sm font-semibold text-[hsl(var(--admin-text-primary))] uppercase tracking-wide">
                     Basics
                   </h3>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="admin-label">
                       Title *
                     </label>
                     <input
                       {...register('title')}
                       type="text"
-                      className="block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      className="admin-input w-full"
                     />
                     {errors.title && (
-                      <p className="mt-1 text-xs text-red-600">{errors.title.message}</p>
+                      <p className="mt-1 text-xs text-[hsl(var(--admin-error))]">{errors.title.message}</p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="admin-label">
                       Slug *
                     </label>
                     <SlugInput
@@ -210,70 +227,70 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
                       currentId={serviceId || undefined}
                     />
                     {errors.slug && (
-                      <p className="mt-1 text-xs text-red-600">{errors.slug.message}</p>
+                      <p className="mt-1 text-xs text-[hsl(var(--admin-error))]">{errors.slug.message}</p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="admin-label">
                       Category
                     </label>
                     <input
                       {...register('category')}
                       type="text"
-                      className="block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      className="admin-input w-full"
                     />
                   </div>
                 </section>
 
                 {/* Content */}
                 <section className="space-y-4">
-                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
+                  <h3 className="text-sm font-semibold text-[hsl(var(--admin-text-primary))] uppercase tracking-wide">
                     Content
                   </h3>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="admin-label">
                       Short Description
                     </label>
                     <textarea
                       {...register('short_desc')}
                       rows={3}
-                      className="block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      className="admin-input w-full"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="admin-label">
                       Content
                     </label>
                     <textarea
                       {...register('content_richtext')}
                       rows={8}
-                      className="block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      className="admin-input w-full"
                     />
                   </div>
                 </section>
 
                 {/* Media */}
                 <section className="space-y-4">
-                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
+                  <h3 className="text-sm font-semibold text-[hsl(var(--admin-text-primary))] uppercase tracking-wide">
                     Media
                   </h3>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="admin-label">
                       Icon URL
                     </label>
                     <input
                       {...register('icon_url')}
                       type="url"
-                      className="block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      className="admin-input w-full"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="admin-label">
                       Gallery URLs
                     </label>
                     <GalleryInput
@@ -285,50 +302,50 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
 
                 {/* SEO */}
                 <section className="space-y-4">
-                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
+                  <h3 className="text-sm font-semibold text-[hsl(var(--admin-text-primary))] uppercase tracking-wide">
                     SEO
                   </h3>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="admin-label">
                       SEO Title
                     </label>
                     <input
                       {...register('seo_title')}
                       type="text"
-                      className="block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      className="admin-input w-full"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="admin-label">
                       Meta Description
                     </label>
                     <textarea
                       {...register('seo_description')}
                       rows={2}
                       maxLength={160}
-                      className="block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      className="admin-input w-full"
                     />
                     {errors.seo_description && (
-                      <p className="mt-1 text-xs text-red-600">{errors.seo_description.message}</p>
+                      <p className="mt-1 text-xs text-[hsl(var(--admin-error))]">{errors.seo_description.message}</p>
                     )}
                   </div>
                 </section>
 
                 {/* Publish */}
                 <section className="space-y-4">
-                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
+                  <h3 className="text-sm font-semibold text-[hsl(var(--admin-text-primary))] uppercase tracking-wide">
                     Publish
                   </h3>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="admin-label">
                       Status
                     </label>
                     <select
                       {...register('status')}
-                      className="block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      className="admin-input w-full"
                     >
                       <option value="draft">Draft</option>
                       <option value="published">Published</option>
@@ -341,18 +358,18 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50">
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-[hsl(var(--admin-border-elevated))] bg-[hsl(var(--admin-bg-surface-elevated))] sticky bottom-0">
             <button
               type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+              onClick={handleClose}
+              className="admin-btn-secondary"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 disabled:opacity-50"
+              className="admin-btn-primary disabled:opacity-50"
             >
               {loading ? 'Saving...' : 'Save'}
             </button>
