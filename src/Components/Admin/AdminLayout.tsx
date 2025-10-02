@@ -12,6 +12,14 @@ import {
   LogOut,
   ChevronRight,
   Search,
+  DollarSign,
+  HelpCircle,
+  MessageSquare,
+  Users,
+  Layout,
+  Image,
+  Navigation,
+  Settings,
 } from 'lucide-react';
 
 interface NavItem {
@@ -25,6 +33,14 @@ const navItems: NavItem[] = [
   { path: '/admin/services', label: 'Services', icon: Package },
   { path: '/admin/projects', label: 'Projects', icon: FolderOpen },
   { path: '/admin/blog', label: 'Blog', icon: FileText },
+  { path: '/admin/pricing', label: 'Pricing', icon: DollarSign },
+  { path: '/admin/faq', label: 'FAQ', icon: HelpCircle },
+  { path: '/admin/testimonials', label: 'Testimonials', icon: MessageSquare },
+  { path: '/admin/team', label: 'Team', icon: Users },
+  { path: '/admin/banners', label: 'Banners', icon: Layout },
+  { path: '/admin/media', label: 'Media', icon: Image },
+  { path: '/admin/menus', label: 'Menus', icon: Navigation },
+  { path: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 
 const AdminLayout = () => {
