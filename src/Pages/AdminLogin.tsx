@@ -24,74 +24,159 @@ const AdminLogin = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-bg-dark-base via-slate-900 to-bg-dark-base flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin text-brand mx-auto mb-4" />
-          <p className="text-slate-400">Loading...</p>
+      <div style={{ 
+        minHeight: '100vh', 
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <Loader2 style={{ height: '32px', width: '32px', color: '#6366f1', margin: '0 auto 16px', animation: 'spin 1s linear infinite' }} />
+          <p style={{ color: '#94a3b8' }}>Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-bg-dark-base via-slate-900 to-bg-dark-base relative overflow-hidden">
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
       {/* Background Grid */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-40"></div>
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundImage: 'url(\'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+\')',
+        opacity: 0.4,
+      }} />
       
       {/* Gradient Orbs */}
-      <div className="absolute top-1/4 -left-48 w-96 h-96 bg-brand/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"></div>
+      <div style={{
+        position: 'absolute',
+        top: '25%',
+        left: '-192px',
+        width: '384px',
+        height: '384px',
+        background: 'rgba(99, 102, 241, 0.1)',
+        borderRadius: '50%',
+        filter: 'blur(96px)',
+      }} />
+      <div style={{
+        position: 'absolute',
+        bottom: '25%',
+        right: '-192px',
+        width: '384px',
+        height: '384px',
+        background: 'rgba(59, 130, 246, 0.1)',
+        borderRadius: '50%',
+        filter: 'blur(96px)',
+      }} />
 
-      <div className="relative z-10 flex min-h-screen">
+      <div style={{ position: 'relative', zIndex: 10, display: 'flex', minHeight: '100vh' }}>
         {/* Left Side - Login Form */}
-        <div className="flex-1 flex items-center justify-center p-8">
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px' }}>
           <LoginCard onSubmit={handleLogin} />
         </div>
 
         {/* Right Side - Feature Panel (Desktop Only) */}
-        <div className="hidden lg:flex flex-1 items-center justify-center p-8">
-          <div className="max-w-lg">
-            <div className="mb-12">
-              <h2 className="text-5xl font-bold text-ink mb-5 leading-tight tracking-tight">
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px' }} className="hidden lg:flex">
+          <div style={{ maxWidth: '512px' }}>
+            <div style={{ marginBottom: '48px' }}>
+              <h2 style={{ 
+                fontSize: '48px', 
+                fontWeight: '700', 
+                color: '#f1f5f9',
+                marginBottom: '20px',
+                lineHeight: '1.2',
+                letterSpacing: '-0.02em',
+              }}>
                 Powerful Content Management
               </h2>
-              <p className="text-lg text-slate-400 leading-relaxed font-medium">
+              <p style={{ 
+                fontSize: '18px', 
+                color: '#94a3b8',
+                lineHeight: '1.6',
+                fontWeight: '500',
+              }}>
                 Manage your digital presence with enterprise-grade tools built for modern teams.
               </p>
             </div>
 
-            <div className="space-y-6">
-              <div className="flex gap-5 group">
-                <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-brand/20 to-brand/5 border border-brand/30 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-brand/25 transition-all duration-300">
-                  <Shield className="w-7 h-7 text-brand" />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <div style={{ display: 'flex', gap: '20px' }}>
+                <div style={{
+                  flexShrink: 0,
+                  width: '56px',
+                  height: '56px',
+                  borderRadius: '16px',
+                  background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0.05))',
+                  border: '1px solid rgba(99, 102, 241, 0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.3s',
+                }}>
+                  <Shield style={{ width: '28px', height: '28px', color: '#6366f1' }} />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-ink mb-2">Advanced CMS</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed font-medium">
+                  <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#f1f5f9', marginBottom: '8px' }}>
+                    Advanced CMS
+                  </h3>
+                  <p style={{ fontSize: '14px', color: '#94a3b8', lineHeight: '1.6', fontWeight: '500' }}>
                     Intuitive content management with rich text editing, media library, and SEO optimization.
                   </p>
                 </div>
               </div>
 
-              <div className="flex gap-5 group">
-                <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-secondary/20 to-secondary/5 border border-secondary/30 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-secondary/25 transition-all duration-300">
-                  <Users className="w-7 h-7 text-secondary" />
+              <div style={{ display: 'flex', gap: '20px' }}>
+                <div style={{
+                  flexShrink: 0,
+                  width: '56px',
+                  height: '56px',
+                  borderRadius: '16px',
+                  background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05))',
+                  border: '1px solid rgba(59, 130, 246, 0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.3s',
+                }}>
+                  <Users style={{ width: '28px', height: '28px', color: '#3b82f6' }} />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-ink mb-2">Role-Based Access</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed font-medium">
+                  <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#f1f5f9', marginBottom: '8px' }}>
+                    Role-Based Access
+                  </h3>
+                  <p style={{ fontSize: '14px', color: '#94a3b8', lineHeight: '1.6', fontWeight: '500' }}>
                     Granular permissions system with super admin, admin, editor, author, and viewer roles.
                   </p>
                 </div>
               </div>
 
-              <div className="flex gap-5 group">
-                <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-accent/20 to-accent/5 border border-accent/30 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-accent/25 transition-all duration-300">
-                  <Zap className="w-7 h-7 text-accent" />
+              <div style={{ display: 'flex', gap: '20px' }}>
+                <div style={{
+                  flexShrink: 0,
+                  width: '56px',
+                  height: '56px',
+                  borderRadius: '16px',
+                  background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(168, 85, 247, 0.05))',
+                  border: '1px solid rgba(168, 85, 247, 0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.3s',
+                }}>
+                  <Zap style={{ width: '28px', height: '28px', color: '#a855f7' }} />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-ink mb-2">SEO Optimized</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed font-medium">
+                  <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#f1f5f9', marginBottom: '8px' }}>
+                    SEO Optimized
+                  </h3>
+                  <p style={{ fontSize: '14px', color: '#94a3b8', lineHeight: '1.6', fontWeight: '500' }}>
                     Built-in SEO tools with meta tags, structured data, and performance optimization.
                   </p>
                 </div>
@@ -99,19 +184,55 @@ const AdminLogin = () => {
             </div>
 
             {/* Abstract Pattern */}
-            <div className="mt-14 relative h-56 rounded-3xl bg-gradient-to-br from-brand/10 via-secondary/5 to-accent/10 border border-border-dark overflow-hidden shadow-2xl">
-              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZG90cyIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48Y2lyY2xlIGN4PSIyIiBjeT0iMiIgcj0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNkb3RzKSIvPjwvc3ZnPg==')] opacity-60"></div>
-              <div className="absolute inset-0 backdrop-blur-3xl"></div>
-              <div className="absolute bottom-6 left-6 right-6">
-                <div className="flex items-center gap-3 text-slate-400">
-                  <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse shadow-lg shadow-green-400/50"></div>
-                  <span className="text-sm font-semibold">System Status: All services operational</span>
+            <div style={{
+              marginTop: '56px',
+              position: 'relative',
+              height: '224px',
+              borderRadius: '24px',
+              background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(59, 130, 246, 0.05), rgba(168, 85, 247, 0.1))',
+              border: '1px solid rgba(51, 65, 85, 0.5)',
+              overflow: 'hidden',
+              boxShadow: '0 20px 60px -15px rgba(0, 0, 0, 0.5)',
+            }}>
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                backgroundImage: 'url(\'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZG90cyIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48Y2lyY2xlIGN4PSIyIiBjeT0iMiIgcj0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNkb3RzKSIvPjwvc3ZnPg==\')',
+                opacity: 0.6,
+              }} />
+              <div style={{ position: 'absolute', inset: 0, backdropFilter: 'blur(96px)' }} />
+              <div style={{ position: 'absolute', bottom: '24px', left: '24px', right: '24px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#94a3b8' }}>
+                  <div style={{
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    background: '#4ade80',
+                    animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    boxShadow: '0 0 20px rgba(74, 222, 128, 0.5)',
+                  }} />
+                  <span style={{ fontSize: '14px', fontWeight: '600' }}>System Status: All services operational</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+        @media (max-width: 1023px) {
+          .hidden.lg\\:flex {
+            display: none !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };
