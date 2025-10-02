@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 const CaseStudy2 = () => {
 
     const chooseContent = [
-        {subtitle:'MARKETING', title:'PPC Advertising', content:'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humor.'},
-        {subtitle:'MARKETING', title:'Digital  Marketing', content:'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humor.'},
-        {subtitle:'MARKETING', title:'Content Marketing', content:'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humor.'},
-      ]; 
+        {subtitle:'MARKETING', title:'PPC Advertising', content:'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humor.', slug:'ppc-advertising'},
+        {subtitle:'MARKETING', title:'Digital  Marketing', content:'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humor.', slug:'digital-marketing'},
+        {subtitle:'MARKETING', title:'Content Marketing', content:'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humor.', slug:'content-marketing'},
+      ];
       
           useEffect(() => {
               loadBackgroudImages();
@@ -50,14 +50,14 @@ const CaseStudy2 = () => {
                 {chooseContent.map((item, i) => (
                 <div key={i} className="case-studies-items bor-top bor-bottom">
                     <div className="content">
-                        <h3><Link to="/project/project-details">{item.title}</Link></h3>
+                        <h3><Link to={`/projects/${item.slug}`}>{item.title}</Link></h3>
                         <span>{item.subtitle}</span>
                         <p>
                         {item.content}
                         </p>
                     </div>
                     <div className="main-button">
-                        <Link to="/project/project-details"> <span className="theme-btn">Get Started </span><span className="arrow-btn"><i className="bi bi-arrow-up-right"></i></span></Link>
+                        <Link to={`/projects/${item.slug}`}> <span className="theme-btn">Get Started </span><span className="arrow-btn"><i className="bi bi-arrow-up-right"></i></span></Link>
                     </div>
                     
                 </div>

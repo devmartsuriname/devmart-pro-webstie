@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 const Blog3 = () => {
 
     const blogContent = [
-        {img:'/assets/img/news/post-1.jpg', title:'Choose The Best IT Service Company in the City.', content:'Pellentesque egestas rutrum nibh facilisis ultrices. Phasellus in magna ut orci malesuada the sollicitudin. Aenean faucibus scelerisque convallis. Quisque interdum mauris id nunc molestie tincidunt erat gravida. Nullam dui libero, mollis ac quam et, venenatis.'},
-        {img:'/assets/img/news/post-2.jpg', title:'Keep Your Business Safe Ensure High Availability', content:'Pellentesque egestas rutrum nibh facilisis ultrices. Phasellus in magna ut orci malesuada the sollicitudin. Aenean faucibus scelerisque convallis. Quisque interdum mauris id nunc molestie tincidunt erat gravida. Nullam dui libero, mollis ac quam et, venenatis.'},
-        {img:'/assets/img/news/post-3.jpg', title:'Tackling the Changes of Retell Industry', content:'Pellentesque egestas rutrum nibh facilisis ultrices. Phasellus in magna ut orci malesuada the sollicitudin. Aenean faucibus scelerisque convallis. Quisque interdum mauris id nunc molestie tincidunt erat gravida. Nullam dui libero, mollis ac quam et, venenatis.'},
-      ]; 
+        {img:'/assets/img/news/post-1.jpg', title:'Choose The Best IT Service Company in the City.', content:'Pellentesque egestas rutrum nibh facilisis ultrices. Phasellus in magna ut orci malesuada the sollicitudin. Aenean faucibus scelerisque convallis. Quisque interdum mauris id nunc molestie tincidunt erat gravida. Nullam dui libero, mollis ac quam et, venenatis.', slug:'choose-best-it-service-company'},
+        {img:'/assets/img/news/post-2.jpg', title:'Keep Your Business Safe Ensure High Availability', content:'Pellentesque egestas rutrum nibh facilisis ultrices. Phasellus in magna ut orci malesuada the sollicitudin. Aenean faucibus scelerisque convallis. Quisque interdum mauris id nunc molestie tincidunt erat gravida. Nullam dui libero, mollis ac quam et, venenatis.', slug:'keep-business-safe-high-availability'},
+        {img:'/assets/img/news/post-3.jpg', title:'Tackling the Changes of Retell Industry', content:'Pellentesque egestas rutrum nibh facilisis ultrices. Phasellus in magna ut orci malesuada the sollicitudin. Aenean faucibus scelerisque convallis. Quisque interdum mauris id nunc molestie tincidunt erat gravida. Nullam dui libero, mollis ac quam et, venenatis.', slug:'tackling-changes-retell-industry'},
+      ];
 
     return (
             <section className="news-standard-section section-padding">
@@ -30,11 +30,11 @@ const Blog3 = () => {
                                             0 Comments
                                         </li>
                                     </ul>
-                                    <h3><Link to="/blog/blog-details">{item.title}</Link></h3>
+                                    <h3><Link to={`/blog/${item.slug}`}>{item.title}</Link></h3>
                                     <p>
                                     {item.content}
                                     </p>
-                                    <Link to="/blog/blog-details" className="theme-btn">Read More <i className="bi bi-arrow-right"></i></Link>
+                                    <Link to={`/blog/${item.slug}`} className="theme-btn">Read More <i className="bi bi-arrow-right"></i></Link>
                                 </div>
                             </div>
                              ))}  

@@ -4,11 +4,11 @@ const Blog1 = () => {
 
 
     const blogContent = [
-        {img:'/assets/img/news/01.jpg', title:'Importers achieve savings through the First Sale rule!'},
-        {img:'/assets/img/news/02.jpg', title:'Is now the right time to invest in an enterprise'},
-        {img:'/assets/img/news/03.jpg', title:'Focus logistics secure new landmark Contracts'},
-        {img:'/assets/img/news/04.jpg', title:'Transid Named a Finalist For Year 25 Best Choice'},
-      ]; 
+        {img:'/assets/img/news/01.jpg', title:'Importers achieve savings through the First Sale rule!', slug:'importers-achieve-savings-first-sale-rule'},
+        {img:'/assets/img/news/02.jpg', title:'Is now the right time to invest in an enterprise', slug:'right-time-invest-enterprise'},
+        {img:'/assets/img/news/03.jpg', title:'Focus logistics secure new landmark Contracts', slug:'focus-logistics-landmark-contracts'},
+        {img:'/assets/img/news/04.jpg', title:'Transid Named a Finalist For Year 25 Best Choice', slug:'transid-finalist-best-choice'},
+      ];
 
     return (
         <section className="news-section section-padding section-bg">
@@ -49,9 +49,9 @@ const Blog1 = () => {
                                           September 6, 2024
                                     </li>
                                 </ul>
-                                <h5><Link to="/blog/blog-details">{item.title}</Link></h5>
+                                <h5><Link to={`/blog/${item.slug}`}>{item.title}</Link></h5>
                                 <div className="news-btn">
-                                    <Link to="/blog/blog-details" className="link-btn">Read More <i className="bi bi-arrow-right"></i></Link>
+                                    <Link to={`/blog/${item.slug}`} className="link-btn">Read More <i className="bi bi-arrow-right"></i></Link>
                                     <img src="/assets/img/news/client-img.png" alt="img" />
                                 </div>
                             </div>

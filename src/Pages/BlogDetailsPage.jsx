@@ -1,14 +1,30 @@
+import { useParams } from "react-router-dom";
+import Breadcrumb from "../Components/Common/Breadcrumb";
 import BlogDetails from "../Components/BlogDetails/BlogDetails";
-import BreadCumb from "../Components/Common/BreadCumb";
+import { Helmet } from "react-helmet";
 
 const BlogDetailsPage = () => {
+    const { slug } = useParams();
+    
+    // Convert slug to title
+    const postTitle = slug ? slug.split('-').map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ') : 'Blog Post';
+
     return (
         <div>
-             <BreadCumb
-                bgimg="/assets/img/breadcrumb.jpg"
-                Title="Blog Details"
-            ></BreadCumb>  
-            <BlogDetails></BlogDetails>         
+            <Helmet>
+                <title>{postTitle} - Blog | DevMart Pro</title>
+                <meta name="description" content={`Read our latest insights: ${postTitle}. Expert tips and industry knowledge from DevMart Pro.`} />
+            </Helmet>
+            <Breadcrumb
+                title={postTitle}
+                items={[
+                    { label: 'Blog', url: '/blog' },
+                    { label: postTitle }
+                ]}
+            />
+            <BlogDetails slug={slug} />         
         </div>
     );
 };

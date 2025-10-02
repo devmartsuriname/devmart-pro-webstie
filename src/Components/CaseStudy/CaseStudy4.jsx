@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 const CaseStudy4 = () => {
 
     const chooseContent = [
-        {subtitle:'Marketing', title:'Digital Marketing', img:'/assets/img/case-studies/02.jpg'},
-        {subtitle:'Seo Design', title:'PPC Advertising', img:'/assets/img/case-studies/03.jpg'},
-        {subtitle:'Designer', title:'Construction Planning', img:'/assets/img/case-studies/04.jpg'},
-        {subtitle:'Marketing', title:'Digital Marketing', img:'/assets/img/case-studies/06.jpg'},
-        {subtitle:'Seo Design', title:'PPC Advertising', img:'/assets/img/case-studies/07.jpg'},
-        {subtitle:'Designer', title:'Construction Planning', img:'/assets/img/case-studies/08.jpg'},        
-      ]; 
+        {subtitle:'Marketing', title:'Digital Marketing', img:'/assets/img/case-studies/02.jpg', slug:'digital-marketing'},
+        {subtitle:'Seo Design', title:'PPC Advertising', img:'/assets/img/case-studies/03.jpg', slug:'ppc-advertising'},
+        {subtitle:'Designer', title:'Construction Planning', img:'/assets/img/case-studies/04.jpg', slug:'construction-planning'},
+        {subtitle:'Marketing', title:'Digital Marketing', img:'/assets/img/case-studies/06.jpg', slug:'digital-marketing-2'},
+        {subtitle:'Seo Design', title:'PPC Advertising', img:'/assets/img/case-studies/07.jpg', slug:'ppc-advertising-2'},
+        {subtitle:'Designer', title:'Construction Planning', img:'/assets/img/case-studies/08.jpg', slug:'construction-planning-2'},        
+      ];
 
     return (
         <section className="case-studies-section-4 fix section-padding">
@@ -23,10 +23,10 @@ const CaseStudy4 = () => {
                         </div>
                         <div className="content">
                             <div className="title">
-                                <h3><Link to="/project/project-details">{item.title}</Link></h3>
+                                <h3><Link to={`/projects/${item.slug}`}>{item.title}</Link></h3>
                                 <p>{item.subtitle}</p>
                             </div>
-                            <Link to="/project/project-details" className="icon"><i className="bi bi-arrow-up-right"></i></Link>
+                            <Link to={`/projects/${item.slug}`} className="icon"><i className="bi bi-arrow-up-right"></i></Link>
                         </div>
                     </div>
                 </div>

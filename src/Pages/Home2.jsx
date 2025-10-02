@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import About2 from "../Components/About/About2";
 import Blog1 from "../Components/Blog/Blog1";
 import Brand1 from "../Components/Brand/Brand1";
@@ -14,6 +15,10 @@ import WhatWeDo2 from "../Components/WhatWeDo/WhatWeDo2";
 const Home2 = () => {
     return (
         <div>
+            <Helmet>
+                <title>DevMart Pro - Innovative Solutions for a Digital World</title>
+                <meta name="description" content="DevMart Pro offers cutting-edge digital solutions including SEO, digital marketing, web development, and automation services to transform your business." />
+            </Helmet>
             <HeroBanner2></HeroBanner2>
             <Brand1></Brand1>
             <WhatWeDo2></WhatWeDo2>
