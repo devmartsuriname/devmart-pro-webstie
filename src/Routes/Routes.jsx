@@ -14,8 +14,10 @@ import CaseStudyPage from "../Pages/CaseStudyPage";
 import CaseStudyDetailsPage from "../Pages/CaseStudyDetailsPage";
 import BlogRightSidebar from "../Pages/BlogRightSidebar";
 import BlogDetailsPage from "../Pages/BlogDetailsPage";
+import { adminRoutes } from "./AdminRoutes";
 
 export const router = createBrowserRouter([
+    ...adminRoutes,
     {
       path: "/",
       element: <Main></Main>,
