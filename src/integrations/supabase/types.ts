@@ -505,6 +505,7 @@ export type Database = {
           hero_image: string | null
           icon_url: string | null
           id: string
+          is_active: boolean | null
           order: number | null
           price_from: number | null
           published_at: string | null
@@ -530,6 +531,7 @@ export type Database = {
           hero_image?: string | null
           icon_url?: string | null
           id?: string
+          is_active?: boolean | null
           order?: number | null
           price_from?: number | null
           published_at?: string | null
@@ -555,6 +557,7 @@ export type Database = {
           hero_image?: string | null
           icon_url?: string | null
           id?: string
+          is_active?: boolean | null
           order?: number | null
           price_from?: number | null
           published_at?: string | null
