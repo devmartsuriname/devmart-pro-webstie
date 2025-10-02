@@ -211,14 +211,14 @@ const ServiceFormPage = () => {
 
   if (initialLoading) {
     return (
-      <div className="max-w-5xl mx-auto space-y-6">
-        <div className="h-10 w-48 bg-slate-800/50 rounded animate-pulse" />
-        <div className="rounded-xl border border-slate-800/50 bg-slate-900/30 p-6">
+      <div className="max-w-4xl mx-auto space-y-6">
+        <div className="h-10 w-48 admin-skeleton rounded-lg" />
+        <div className="admin-card p-6">
           <div className="space-y-4">
             {[1, 2, 3, 4].map((i) => (
               <div key={i}>
-                <div className="h-4 w-24 bg-slate-800/50 rounded animate-pulse mb-2" />
-                <div className="h-10 bg-slate-800/50 rounded animate-pulse" />
+                <div className="h-4 w-24 admin-skeleton rounded mb-2" />
+                <div className="h-10 admin-skeleton rounded-lg" />
               </div>
             ))}
           </div>
@@ -230,38 +230,45 @@ const ServiceFormPage = () => {
   const inputClass = "admin-input";
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8 pb-12">
-      {/* Sticky Header */}
-      <div className="sticky top-0 z-20 bg-[hsl(var(--admin-bg-base))]/95 backdrop-blur-md border-b border-[hsl(var(--admin-border-subtle))] shadow-[var(--admin-shadow-sm)] -mx-6 px-6 py-4 mb-8">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate('/admin/services')}
-              className="p-2.5 text-[hsl(var(--admin-text-muted))] hover:text-[hsl(var(--admin-text-primary))] hover:bg-[hsl(var(--admin-bg-hover))] rounded-lg transition-all duration-200"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </button>
-            <div>
-              <div className="flex items-center gap-3">
-                <h1 className="text-2xl font-bold text-[hsl(var(--admin-text-primary))] tracking-tight">
-                  {id ? 'Edit Service' : 'New Service'}
-                </h1>
-                <SaveIndicator status={saveStatus} lastSaved={lastSaved} />
-              </div>
-              <p className="text-sm text-[hsl(var(--admin-text-muted))] mt-0.5">
-                {id ? 'Update service details and content' : 'Create a new service offering'}
-              </p>
+    <div className="max-w-4xl mx-auto space-y-6 pb-12">
+      {/* Header */}
+      <div className="flex items-start justify-between gap-6">
+        <div className="flex items-start gap-4 flex-1">
+          <button
+            onClick={() => navigate('/admin/services')}
+            className="mt-1 p-2 text-[hsl(var(--admin-text-muted))] hover:text-[hsl(var(--admin-text-primary))] hover:bg-[hsl(var(--admin-bg-elevated))] rounded-lg transition-all duration-200"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </button>
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-1">
+              <h1 className="text-2xl font-bold text-[hsl(var(--admin-text-primary))] tracking-tight">
+                {id ? 'Edit Service' : 'Create New Service'}
+              </h1>
+              {id && <SaveIndicator status={saveStatus} lastSaved={lastSaved} />}
             </div>
+            <p className="text-sm text-[hsl(var(--admin-text-muted))]">
+              {id ? 'Update your service information and settings' : 'Fill in the details to create a new service'}
+            </p>
           </div>
-          
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => navigate('/admin/services')}
+            className="admin-btn-secondary text-sm"
+          >
+            Cancel
+          </button>
           <button
             type="submit"
             form="service-form"
             disabled={loading}
-            className="admin-btn-primary"
+            className="admin-btn-primary text-sm"
           >
             <Save className="h-4 w-4" />
-            {loading ? 'Saving...' : id ? 'Update Service' : 'Create Service'}
+            {loading ? 'Saving...' : id ? 'Update' : 'Create'}
           </button>
         </div>
       </div>
@@ -350,12 +357,12 @@ const ServiceFormPage = () => {
         </FormSection>
 
         {/* Content */}
-        <FormSection title="Content" color="purple">
-          <FormInput label="Short Description" helperText="Brief description for cards and previews (max 280 characters)">
-            <textarea {...register('short_desc')} rows={3} className={inputClass} placeholder="Brief description..." />
+        <FormSection title="Content & Description" color="purple">
+          <FormInput label="Short Description" helperText="Brief overview for cards and previews (280 characters max)" error={errors.short_desc?.message}>
+            <textarea {...register('short_desc')} rows={3} maxLength={280} className={inputClass} placeholder="Brief description of the service..." />
           </FormInput>
 
-          <FormInput label="Full Description">
+          <FormInput label="Full Content" helperText="Detailed service information and benefits">
             <RichTextEditor
               content={contentValue || ''}
               onChange={(value) => setValue('content_richtext', value, { shouldDirty: true })}
@@ -363,50 +370,57 @@ const ServiceFormPage = () => {
           </FormInput>
         </FormSection>
 
-        {/* Media */}
-        <FormSection title="Media" color="emerald">
-          <FormInput label="Icon URL" helperText="URL to the service icon/logo">
-            <input {...register('icon_url')} type="url" className={inputClass} placeholder="https://example.com/icon.svg" />
-          </FormInput>
+        {/* Media Assets */}
+        <FormSection title="Media Assets" color="emerald">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <FormInput label="Icon URL" helperText="Service icon or logo" error={errors.icon_url?.message}>
+              <input {...register('icon_url')} type="url" className={inputClass} placeholder="https://example.com/icon.svg" />
+            </FormInput>
 
-          <FormInput label="Hero Image" helperText="Main banner image for the service page">
-            <input {...register('hero_image')} type="url" className={inputClass} placeholder="https://example.com/hero.jpg" />
-          </FormInput>
+            <FormInput label="Hero Image" helperText="Main banner image" error={errors.hero_image?.message}>
+              <input {...register('hero_image')} type="url" className={inputClass} placeholder="https://example.com/hero.jpg" />
+            </FormInput>
+          </div>
 
-          <FormInput label="Gallery" helperText="Additional images for the service">
+          <FormInput label="Gallery Images" helperText="Additional images for showcase">
             <GalleryInput value={galleryValue || []} onChange={(urls) => setValue('gallery_urls', urls)} />
           </FormInput>
         </FormSection>
 
         {/* Pricing & Features */}
         <FormSection title="Pricing & Features" color="amber">
-          <FormInput label="Starting Price" helperText="Optional starting price (₹)">
+          <FormInput label="Starting Price (₹)" helperText="Optional starting price for the service">
             <input
               {...register('price_from', { valueAsNumber: true, setValueAs: v => v === '' ? null : Number(v) })}
               type="number"
               step="0.01"
+              min="0"
               className={inputClass}
               placeholder="999.00"
             />
           </FormInput>
 
-          <FormInput label="Features" helperText="List of key features included">
+          <FormInput label="Key Features" helperText="Add features and benefits included in this service">
             <div className="space-y-3">
               <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="Feature title"
-                  value={newFeature.title}
-                  onChange={(e) => setNewFeature({ ...newFeature, title: e.target.value })}
-                  className={inputClass}
-                />
-                <input
-                  type="text"
-                  placeholder="Description (optional)"
-                  value={newFeature.description}
-                  onChange={(e) => setNewFeature({ ...newFeature, description: e.target.value })}
-                  className={inputClass}
-                />
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    placeholder="Feature title"
+                    value={newFeature.title}
+                    onChange={(e) => setNewFeature({ ...newFeature, title: e.target.value })}
+                    className={inputClass}
+                  />
+                </div>
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    placeholder="Description (optional)"
+                    value={newFeature.description}
+                    onChange={(e) => setNewFeature({ ...newFeature, description: e.target.value })}
+                    className={inputClass}
+                  />
+                </div>
                 <button
                   type="button"
                   onClick={() => {
@@ -424,17 +438,17 @@ const ServiceFormPage = () => {
               {featuresValue.length > 0 && (
                 <div className="space-y-2">
                   {featuresValue.map((feature, index) => (
-                    <div key={index} className="flex items-start gap-3 p-4 bg-[hsl(var(--admin-bg-elevated))] border border-[hsl(var(--admin-border))] rounded-lg group hover:border-[hsl(var(--admin-border-hover))] hover:shadow-[var(--admin-shadow-sm)] transition-all duration-200">
+                    <div key={index} className="flex items-start gap-3 p-3.5 bg-[hsl(var(--admin-bg-elevated))] border border-[hsl(var(--admin-border))] rounded-lg group hover:border-[hsl(var(--admin-border-hover))] hover:shadow-[var(--admin-shadow-sm)] transition-all duration-200">
                       <div className="flex-1 min-w-0">
                         <div className="font-medium text-[hsl(var(--admin-text-primary))] text-sm">{feature.title}</div>
                         {feature.description && (
-                          <div className="text-xs text-[hsl(var(--admin-text-muted))] mt-1">{feature.description}</div>
+                          <div className="text-xs text-[hsl(var(--admin-text-muted))] mt-0.5">{feature.description}</div>
                         )}
                       </div>
                       <button
                         type="button"
                         onClick={() => setValue('features', featuresValue.filter((_, i) => i !== index), { shouldDirty: true })}
-                        className="flex-shrink-0 p-2 text-[hsl(var(--admin-text-muted))] hover:text-[hsl(var(--admin-error))] hover:bg-[hsl(var(--admin-error-soft))] rounded-lg transition-all duration-200 opacity-0 group-hover:opacity-100"
+                        className="flex-shrink-0 p-1.5 text-[hsl(var(--admin-text-muted))] hover:text-[hsl(var(--admin-error))] hover:bg-[hsl(var(--admin-error-soft))] rounded-lg transition-all duration-200 opacity-0 group-hover:opacity-100"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -446,21 +460,21 @@ const ServiceFormPage = () => {
           </FormInput>
         </FormSection>
 
-        {/* SEO */}
-        <FormSection title="SEO & Metadata" color="rose">
-          <FormInput label="SEO Title" helperText="Optimized title for search engines">
-            <input {...register('seo_title')} type="text" className={inputClass} placeholder="SEO-friendly title" />
+        {/* SEO & Metadata */}
+        <FormSection title="SEO Settings" color="rose">
+          <FormInput label="SEO Title" helperText="Optimized title for search engines (leave blank to use service title)">
+            <input {...register('seo_title')} type="text" maxLength={60} className={inputClass} placeholder="SEO-friendly title" />
           </FormInput>
 
-          <FormInput label="Meta Description" error={errors.seo_description?.message} helperText="Brief description for search results (max 160 characters)">
-            <textarea {...register('seo_description')} rows={2} maxLength={160} className={inputClass} placeholder="Meta description..." />
+          <FormInput label="Meta Description" error={errors.seo_description?.message} helperText="Description for search results (160 characters max)">
+            <textarea {...register('seo_description')} rows={2} maxLength={160} className={inputClass} placeholder="Brief meta description for search engines..." />
           </FormInput>
         </FormSection>
 
-        {/* Publishing */}
+        {/* Publishing Settings */}
         <FormSection title="Publishing" color="purple">
-          <div className="grid grid-cols-2 gap-4">
-            <FormInput label="Status">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <FormInput label="Status" helperText="Current publication status">
               <select {...register('status')} className={inputClass}>
                 <option value="draft">Draft</option>
                 <option value="published">Published</option>
@@ -469,8 +483,8 @@ const ServiceFormPage = () => {
               </select>
             </FormInput>
 
-            <FormInput label="Display Order" helperText="Order in which services appear">
-              <input {...register('order', { valueAsNumber: true })} type="number" className={inputClass} placeholder="0" />
+            <FormInput label="Display Order" helperText="Sort order for listing">
+              <input {...register('order', { valueAsNumber: true })} type="number" min="0" className={inputClass} placeholder="0" />
             </FormInput>
           </div>
         </FormSection>
