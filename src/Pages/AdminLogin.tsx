@@ -24,7 +24,7 @@ const AdminLogin = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-bg-dark-base via-slate-900 to-bg-dark-base flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin text-brand mx-auto mb-4" />
           <p className="text-slate-400">Loading...</p>
