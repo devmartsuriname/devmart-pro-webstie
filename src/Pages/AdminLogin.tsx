@@ -1,362 +1,109 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { toast } from 'sonner';
-import { Eye, EyeOff, Loader2, Mail, Lock, User, ArrowLeft } from 'lucide-react';
-
-type AuthMode = 'login' | 'signup' | 'reset';
+import { LoginCard } from '@/components/auth/LoginCard';
+import { type LoginInput } from '@/lib/validation/auth';
+import { Loader2, Shield, Users, Zap } from 'lucide-react';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
-  
-  const [mode, setMode] = useState<AuthMode>('login');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [name, setName] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { user, loading, signIn } = useAuth();
 
-  // Redirect if already authenticated
   useEffect(() => {
-    if (!authLoading && user) {
+    if (user && !loading) {
       navigate('/admin', { replace: true });
     }
-  }, [user, authLoading, navigate]);
+  }, [user, loading, navigate]);
 
-  const validateEmail = (email: string): boolean => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  };
-
-  const validatePassword = (password: string): boolean => {
-    return password.length >= 8;
-  };
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateEmail(email)) {
-      toast.error('Please enter a valid email address');
-      return;
-    }
-
-    if (!password) {
-      toast.error('Please enter your password');
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        if (error.message.includes('Invalid login credentials')) {
-          toast.error('Invalid email or password');
-        } else {
-          toast.error(error.message);
-        }
-        return;
-      }
-
-      toast.success('Welcome back!');
-      navigate('/admin', { replace: true });
-    } catch (error: any) {
-      toast.error(error.message || 'An error occurred during login');
-    } finally {
-      setLoading(false);
+  const handleLogin = async (data: LoginInput) => {
+    const { error } = await signIn(data.email, data.password);
+    if (error) {
+      throw new Error(error.message);
     }
   };
 
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!name.trim()) {
-      toast.error('Please enter your name');
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      toast.error('Please enter a valid email address');
-      return;
-    }
-
-    if (!validatePassword(password)) {
-      toast.error('Password must be at least 8 characters long');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const redirectUrl = `${window.location.origin}/admin`;
-      
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: redirectUrl,
-          data: {
-            name,
-          },
-        },
-      });
-
-      if (error) {
-        if (error.message.includes('already registered')) {
-          toast.error('This email is already registered. Please login instead.');
-        } else {
-          toast.error(error.message);
-        }
-        return;
-      }
-
-      toast.success('Account created! You can now login.');
-      setMode('login');
-      setPassword('');
-      setConfirmPassword('');
-    } catch (error: any) {
-      toast.error(error.message || 'An error occurred during signup');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handlePasswordReset = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateEmail(email)) {
-      toast.error('Please enter a valid email address');
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const redirectUrl = `${window.location.origin}/admin/login`;
-      
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: redirectUrl,
-      });
-
-      if (error) {
-        toast.error(error.message);
-        return;
-      }
-
-      toast.success('Password reset link sent! Check your email.');
-      setMode('login');
-    } catch (error: any) {
-      toast.error(error.message || 'An error occurred');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    if (mode === 'login') return handleLogin(e);
-    if (mode === 'signup') return handleSignup(e);
-    if (mode === 'reset') return handlePasswordReset(e);
-  };
-
-  if (authLoading) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin text-brand mx-auto mb-4" />
+          <p className="text-slate-400">Loading...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-blue-500/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-purple-500/5 rounded-full blur-3xl" />
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
+      {/* Background Grid */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-40"></div>
+      
+      {/* Gradient Orbs */}
+      <div className="absolute top-1/4 -left-48 w-96 h-96 bg-brand/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"></div>
 
-      <div className="relative w-full max-w-md">
-        {/* Back to site link */}
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 text-slate-400 hover:text-slate-300 mb-6 transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to site
-        </Link>
+      <div className="relative z-10 flex min-h-screen">
+        {/* Left Side - Login Form */}
+        <div className="flex-1 flex items-center justify-center p-8">
+          <LoginCard onSubmit={handleLogin} />
+        </div>
 
-        {/* Auth card */}
-        <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-2xl p-8 shadow-2xl">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-slate-100 mb-2">
-              {mode === 'login' && 'Welcome Back'}
-              {mode === 'signup' && 'Create Account'}
-              {mode === 'reset' && 'Reset Password'}
-            </h1>
-            <p className="text-slate-400">
-              {mode === 'login' && 'Sign in to access the admin dashboard'}
-              {mode === 'signup' && 'Sign up to get started'}
-              {mode === 'reset' && 'Enter your email to receive a reset link'}
-            </p>
-          </div>
+        {/* Right Side - Feature Panel (Desktop Only) */}
+        <div className="hidden lg:flex flex-1 items-center justify-center p-8">
+          <div className="max-w-lg">
+            <div className="mb-12">
+              <h2 className="text-4xl font-bold text-ink mb-4">
+                Powerful Content Management
+              </h2>
+              <p className="text-lg text-slate-400">
+                Manage your digital presence with enterprise-grade tools built for modern teams.
+              </p>
+            </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {mode === 'signup' && (
-              <div>
-                <label className="block text-sm font-medium text-slate-200 mb-2">
-                  Full Name
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3 bg-slate-800/50 border border-slate-700 text-slate-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all"
-                    placeholder="John Doe"
-                    disabled={loading}
-                  />
+            <div className="space-y-8">
+              <div className="flex gap-4">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-brand/10 border border-brand/20 flex items-center justify-center">
+                  <Shield className="w-6 h-6 text-brand" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-ink mb-1">Advanced CMS</h3>
+                  <p className="text-slate-400 text-sm">
+                    Intuitive content management with rich text editing, media library, and SEO optimization.
+                  </p>
                 </div>
               </div>
-            )}
 
-            <div>
-              <label className="block text-sm font-medium text-slate-200 mb-2">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 bg-slate-800/50 border border-slate-700 text-slate-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all"
-                  placeholder="you@example.com"
-                  disabled={loading}
-                />
+              <div className="flex gap-4">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-secondary/10 border border-secondary/20 flex items-center justify-center">
+                  <Users className="w-6 h-6 text-blue-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-ink mb-1">Role-Based Access</h3>
+                  <p className="text-slate-400 text-sm">
+                    Granular permissions system with super admin, admin, editor, author, and viewer roles.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
+                  <Zap className="w-6 h-6 text-accent" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-ink mb-1">SEO Optimized</h3>
+                  <p className="text-slate-400 text-sm">
+                    Built-in SEO tools with meta tags, structured data, and performance optimization.
+                  </p>
+                </div>
               </div>
             </div>
 
-            {mode !== 'reset' && (
-              <div>
-                <label className="block text-sm font-medium text-slate-200 mb-2">
-                  Password
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-11 pr-12 py-3 bg-slate-800/50 border border-slate-700 text-slate-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all"
-                    placeholder="••••••••"
-                    disabled={loading}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-400 transition-colors"
-                  >
-                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                  </button>
-                </div>
-                {mode === 'signup' && (
-                  <p className="mt-1 text-xs text-slate-500">
-                    Must be at least 8 characters
-                  </p>
-                )}
-              </div>
-            )}
-
-            {mode === 'signup' && (
-              <div>
-                <label className="block text-sm font-medium text-slate-200 mb-2">
-                  Confirm Password
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3 bg-slate-800/50 border border-slate-700 text-slate-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all"
-                    placeholder="••••••••"
-                    disabled={loading}
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Submit button */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              {loading && <Loader2 className="h-5 w-5 animate-spin" />}
-              {mode === 'login' && 'Sign In'}
-              {mode === 'signup' && 'Create Account'}
-              {mode === 'reset' && 'Send Reset Link'}
-            </button>
-          </form>
-
-          {/* Mode switcher */}
-          <div className="mt-6 text-center space-y-2">
-            {mode === 'login' && (
-              <>
-                <button
-                  onClick={() => setMode('reset')}
-                  className="text-sm text-slate-400 hover:text-slate-300 transition-colors"
-                >
-                  Forgot your password?
-                </button>
-                <div className="text-sm text-slate-400">
-                  Don't have an account?{' '}
-                  <button
-                    onClick={() => setMode('signup')}
-                    className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
-                  >
-                    Sign up
-                  </button>
-                </div>
-              </>
-            )}
-
-            {(mode === 'signup' || mode === 'reset') && (
-              <div className="text-sm text-slate-400">
-                Already have an account?{' '}
-                <button
-                  onClick={() => {
-                    setMode('login');
-                    setPassword('');
-                    setConfirmPassword('');
-                  }}
-                  className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
-                >
-                  Sign in
-                </button>
-              </div>
-            )}
+            {/* Abstract Pattern */}
+            <div className="mt-12 relative h-48 rounded-2xl bg-gradient-to-br from-brand/5 to-secondary/5 border border-slate-800/50 overflow-hidden">
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZG90cyIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48Y2lyY2xlIGN4PSIyIiBjeT0iMiIgcj0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNkb3RzKSIvPjwvc3ZnPg==')] opacity-50"></div>
+            </div>
           </div>
         </div>
-
-        {/* Footer note */}
-        <p className="mt-6 text-center text-sm text-slate-500">
-          Protected by enterprise-grade security
-        </p>
       </div>
     </div>
   );

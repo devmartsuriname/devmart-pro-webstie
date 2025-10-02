@@ -8,6 +8,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --ink: 230 230 230; /* #e6e6e6 in HSL */
+  }
+}
+
 :root {
   --body: #fff;
   --black: #000;
