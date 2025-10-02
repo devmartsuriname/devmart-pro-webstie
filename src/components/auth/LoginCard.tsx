@@ -11,6 +11,7 @@ interface LoginCardProps {
 }
 
 export const LoginCard = ({ onSubmit }: LoginCardProps) => {
+  // Professional admin login card with dark theme
   const [formData, setFormData] = useState<LoginInput>({
     email: '',
     password: '',
