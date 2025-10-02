@@ -10,7 +10,6 @@ import {
   Menu,
   X,
   LogOut,
-  User,
   ChevronRight,
   Search,
 } from 'lucide-react';
@@ -68,37 +67,77 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex">
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)', display: 'flex' }}>
       {/* Sidebar - Desktop */}
       <aside
-        className={`hidden lg:flex flex-col bg-slate-900 border-r border-slate-800 transition-all duration-300 ${
-          sidebarOpen ? 'w-72' : 'w-20'
-        }`}
+        style={{
+          display: 'none',
+          flexDirection: 'column',
+          background: 'rgba(15, 23, 42, 0.8)',
+          backdropFilter: 'blur(20px)',
+          borderRight: '1px solid rgba(51, 65, 85, 0.5)',
+          width: sidebarOpen ? '288px' : '80px',
+          transition: 'width 0.3s',
+        }}
+        className="lg-flex"
       >
         {/* Sidebar Header */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-slate-800">
+        <div style={{ height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 16px', borderBottom: '1px solid rgba(51, 65, 85, 0.5)' }}>
           {sidebarOpen ? (
             <>
-              <h1 className="text-xl font-bold text-slate-100">Admin CMS</h1>
+              <h1 style={{ fontSize: '20px', fontWeight: '700', color: '#f1f5f9' }}>Admin CMS</h1>
               <button
                 onClick={() => setSidebarOpen(false)}
-                className="p-2 hover:bg-slate-800 rounded-lg transition-colors text-slate-400 hover:text-slate-300"
+                style={{
+                  padding: '8px',
+                  background: 'transparent',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  color: '#94a3b8',
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(30, 41, 59, 0.8)';
+                  e.currentTarget.style.color = '#cbd5e1';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = '#94a3b8';
+                }}
               >
-                <X className="h-5 w-5" />
+                <X style={{ height: '20px', width: '20px' }} />
               </button>
             </>
           ) : (
             <button
               onClick={() => setSidebarOpen(true)}
-              className="p-2 hover:bg-slate-800 rounded-lg transition-colors text-slate-400 hover:text-slate-300 mx-auto"
+              style={{
+                padding: '8px',
+                background: 'transparent',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                color: '#94a3b8',
+                margin: '0 auto',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(30, 41, 59, 0.8)';
+                e.currentTarget.style.color = '#cbd5e1';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#94a3b8';
+              }}
             >
-              <Menu className="h-5 w-5" />
+              <Menu style={{ height: '20px', width: '20px' }} />
             </button>
           )}
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-1">
+        <nav style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
           {navItems.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.path);
@@ -107,52 +146,120 @@ const AdminLayout = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
-                  active
-                    ? 'bg-blue-600 text-white'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-slate-300'
-                }`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  padding: '10px 12px',
+                  borderRadius: '10px',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s',
+                  background: active ? 'linear-gradient(135deg, #6366f1, #4f46e5)' : 'transparent',
+                  color: active ? '#ffffff' : '#94a3b8',
+                  boxShadow: active ? '0 4px 12px rgba(99, 102, 241, 0.4)' : 'none',
+                }}
+                onMouseEnter={(e) => {
+                  if (!active) {
+                    e.currentTarget.style.background = 'rgba(30, 41, 59, 0.6)';
+                    e.currentTarget.style.color = '#cbd5e1';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!active) {
+                    e.currentTarget.style.background = 'transparent';
+                    e.currentTarget.style.color = '#94a3b8';
+                  }
+                }}
                 title={!sidebarOpen ? item.label : undefined}
               >
-                <Icon className="h-5 w-5 flex-shrink-0" />
-                {sidebarOpen && <span className="font-medium">{item.label}</span>}
+                <Icon style={{ height: '20px', width: '20px', flexShrink: 0 }} />
+                {sidebarOpen && <span style={{ fontWeight: '500' }}>{item.label}</span>}
               </Link>
             );
           })}
         </nav>
 
         {/* User Section */}
-        <div className="p-4 border-t border-slate-800">
+        <div style={{ padding: '16px', borderTop: '1px solid rgba(51, 65, 85, 0.5)' }}>
           {sidebarOpen ? (
-            <div className="space-y-2">
-              <div className="flex items-center gap-3 px-3 py-2 bg-slate-800 rounded-lg">
-                <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-semibold">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px', background: 'rgba(30, 41, 59, 0.6)', borderRadius: '10px' }}>
+                <div style={{
+                  height: '32px',
+                  width: '32px',
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #6366f1, #4f46e5)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#ffffff',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                }}>
                   {user?.email?.charAt(0).toUpperCase() || 'U'}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-200 truncate">
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ fontSize: '14px', fontWeight: '500', color: '#e2e8f0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', margin: 0 }}>
                     {user?.email}
                   </p>
                   {role && (
-                    <p className="text-xs text-slate-400 capitalize">{role}</p>
+                    <p style={{ fontSize: '12px', color: '#94a3b8', textTransform: 'capitalize', margin: 0 }}>{role}</p>
                   )}
                 </div>
               </div>
               <button
                 onClick={handleSignOut}
-                className="w-full flex items-center gap-3 px-3 py-2.5 text-slate-400 hover:bg-slate-800 hover:text-slate-300 rounded-lg transition-colors"
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  padding: '10px 12px',
+                  color: '#94a3b8',
+                  background: 'transparent',
+                  border: 'none',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  fontWeight: '500',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(30, 41, 59, 0.6)';
+                  e.currentTarget.style.color = '#cbd5e1';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = '#94a3b8';
+                }}
               >
-                <LogOut className="h-5 w-5" />
-                <span className="font-medium">Sign Out</span>
+                <LogOut style={{ height: '20px', width: '20px' }} />
+                <span>Sign Out</span>
               </button>
             </div>
           ) : (
             <button
               onClick={handleSignOut}
-              className="w-full p-2 text-slate-400 hover:bg-slate-800 hover:text-slate-300 rounded-lg transition-colors"
+              style={{
+                width: '100%',
+                padding: '8px',
+                color: '#94a3b8',
+                background: 'transparent',
+                border: 'none',
+                borderRadius: '10px',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(30, 41, 59, 0.6)';
+                e.currentTarget.style.color = '#cbd5e1';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#94a3b8';
+              }}
               title="Sign Out"
             >
-              <LogOut className="h-5 w-5 mx-auto" />
+              <LogOut style={{ height: '20px', width: '20px', margin: '0 auto', display: 'block' }} />
             </button>
           )}
         </div>
@@ -162,22 +269,46 @@ const AdminLayout = () => {
       {mobileMenuOpen && (
         <>
           <div
-            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0, 0, 0, 0.5)',
+              zIndex: 40,
+            }}
+            className="lg-hidden"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <aside className="fixed inset-y-0 left-0 w-72 bg-slate-900 border-r border-slate-800 z-50 lg:hidden flex flex-col">
-            {/* Same content as desktop sidebar */}
-            <div className="h-16 flex items-center justify-between px-4 border-b border-slate-800">
-              <h1 className="text-xl font-bold text-slate-100">Admin CMS</h1>
+          <aside style={{
+            position: 'fixed',
+            insetY: 0,
+            left: 0,
+            width: '288px',
+            background: 'rgba(15, 23, 42, 0.95)',
+            backdropFilter: 'blur(20px)',
+            borderRight: '1px solid rgba(51, 65, 85, 0.5)',
+            zIndex: 50,
+            display: 'flex',
+            flexDirection: 'column',
+          }} className="lg-hidden">
+            {/* Mobile sidebar content - same structure as desktop */}
+            <div style={{ height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 16px', borderBottom: '1px solid rgba(51, 65, 85, 0.5)' }}>
+              <h1 style={{ fontSize: '20px', fontWeight: '700', color: '#f1f5f9' }}>Admin CMS</h1>
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-2 hover:bg-slate-800 rounded-lg transition-colors text-slate-400 hover:text-slate-300"
+                style={{
+                  padding: '8px',
+                  background: 'transparent',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  color: '#94a3b8',
+                }}
               >
-                <X className="h-5 w-5" />
+                <X style={{ height: '20px', width: '20px' }} />
               </button>
             </div>
 
-            <nav className="flex-1 p-4 space-y-1">
+            <nav style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const active = isActive(item.path);
@@ -187,71 +318,83 @@ const AdminLayout = () => {
                     key={item.path}
                     to={item.path}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
-                      active
-                        ? 'bg-blue-600 text-white'
-                        : 'text-slate-400 hover:bg-slate-800 hover:text-slate-300'
-                    }`}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      padding: '10px 12px',
+                      borderRadius: '10px',
+                      textDecoration: 'none',
+                      background: active ? 'linear-gradient(135deg, #6366f1, #4f46e5)' : 'transparent',
+                      color: active ? '#ffffff' : '#94a3b8',
+                      fontWeight: '500',
+                    }}
                   >
-                    <Icon className="h-5 w-5" />
-                    <span className="font-medium">{item.label}</span>
+                    <Icon style={{ height: '20px', width: '20px' }} />
+                    <span>{item.label}</span>
                   </Link>
                 );
               })}
             </nav>
-
-            <div className="p-4 border-t border-slate-800">
-              <div className="space-y-2">
-                <div className="flex items-center gap-3 px-3 py-2 bg-slate-800 rounded-lg">
-                  <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-semibold">
-                    {user?.email?.charAt(0).toUpperCase() || 'U'}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-slate-200 truncate">
-                      {user?.email}
-                    </p>
-                    {role && (
-                      <p className="text-xs text-slate-400 capitalize">{role}</p>
-                    )}
-                  </div>
-                </div>
-                <button
-                  onClick={handleSignOut}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 text-slate-400 hover:bg-slate-800 hover:text-slate-300 rounded-lg transition-colors"
-                >
-                  <LogOut className="h-5 w-5" />
-                  <span className="font-medium">Sign Out</span>
-                </button>
-              </div>
-            </div>
           </aside>
         </>
       )}
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
         {/* Topbar */}
-        <header className="h-16 bg-slate-900/80 backdrop-blur-sm border-b border-slate-800 sticky top-0 z-30 flex items-center justify-between px-4 lg:px-6">
+        <header style={{
+          height: '64px',
+          background: 'rgba(15, 23, 42, 0.8)',
+          backdropFilter: 'blur(12px)',
+          borderBottom: '1px solid rgba(51, 65, 85, 0.5)',
+          position: 'sticky',
+          top: 0,
+          zIndex: 30,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0 16px',
+        }}>
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="lg:hidden p-2 hover:bg-slate-800 rounded-lg transition-colors text-slate-400"
+            style={{
+              padding: '8px',
+              background: 'transparent',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              color: '#94a3b8',
+            }}
+            className="lg-hidden"
           >
-            <Menu className="h-5 w-5" />
+            <Menu style={{ height: '20px', width: '20px' }} />
           </button>
 
           {/* Breadcrumbs */}
-          <nav className="flex items-center gap-2 text-sm">
+          <nav style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
             {getBreadcrumbs().map((crumb, index) => (
-              <div key={crumb.path} className="flex items-center gap-2">
-                {index > 0 && <ChevronRight className="h-4 w-4 text-slate-600" />}
+              <div key={crumb.path} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {index > 0 && <ChevronRight style={{ height: '16px', width: '16px', color: '#475569' }} />}
                 <Link
                   to={crumb.path}
-                  className={`${
-                    index === getBreadcrumbs().length - 1
-                      ? 'text-slate-100 font-medium'
-                      : 'text-slate-400 hover:text-slate-300'
-                  } transition-colors`}
+                  style={{
+                    color: index === getBreadcrumbs().length - 1 ? '#f1f5f9' : '#94a3b8',
+                    fontWeight: index === getBreadcrumbs().length - 1 ? '500' : 'normal',
+                    textDecoration: 'none',
+                    transition: 'color 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (index < getBreadcrumbs().length - 1) {
+                      e.currentTarget.style.color = '#cbd5e1';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (index < getBreadcrumbs().length - 1) {
+                      e.currentTarget.style.color = '#94a3b8';
+                    }
+                  }}
                 >
                   {crumb.label}
                 </Link>
@@ -259,37 +402,79 @@ const AdminLayout = () => {
             ))}
           </nav>
 
-          {/* Right Section */}
-          <div className="flex items-center gap-3">
-            <div className="relative hidden md:block">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-              <input
-                type="search"
-                placeholder="Search..."
-                className="pl-9 pr-4 py-2 w-64 bg-slate-800 border border-slate-700 text-slate-100 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/40 placeholder:text-slate-500"
-              />
-            </div>
+          {/* Search */}
+          <div style={{ position: 'relative' }} className="hidden-mobile">
+            <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', height: '16px', width: '16px', color: '#94a3b8' }} />
+            <input
+              type="search"
+              placeholder="Search..."
+              style={{
+                paddingLeft: '36px',
+                paddingRight: '16px',
+                paddingTop: '8px',
+                paddingBottom: '8px',
+                width: '256px',
+                background: 'rgba(30, 41, 59, 0.6)',
+                border: '1px solid rgba(51, 65, 85, 0.5)',
+                color: '#f1f5f9',
+                fontSize: '14px',
+                borderRadius: '10px',
+                outline: 'none',
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = 'rgba(99, 102, 241, 0.5)';
+                e.target.style.boxShadow = '0 0 0 3px rgba(99, 102, 241, 0.1)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = 'rgba(51, 65, 85, 0.5)';
+                e.target.style.boxShadow = 'none';
+              }}
+            />
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto">
-          <div className="max-w-7xl mx-auto p-4 lg:p-6">
+        <main style={{ flex: 1, overflow: 'auto' }}>
+          <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '24px' }}>
             <Outlet />
           </div>
         </main>
 
         {/* Footer */}
-        <footer className="bg-slate-900 border-t border-slate-800 py-4 px-6">
-          <div className="flex items-center justify-between text-sm text-slate-400">
-            <p>© {new Date().getFullYear()} Admin CMS. All rights reserved.</p>
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+        <footer style={{
+          background: 'rgba(15, 23, 42, 0.8)',
+          borderTop: '1px solid rgba(51, 65, 85, 0.5)',
+          padding: '16px 24px',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '14px', color: '#94a3b8' }}>
+            <p style={{ margin: 0 }}>© {new Date().getFullYear()} Admin CMS. All rights reserved.</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{
+                height: '8px',
+                width: '8px',
+                borderRadius: '50%',
+                background: '#22c55e',
+                animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              }} />
               <span>System Online</span>
             </div>
           </div>
         </footer>
       </div>
+      
+      <style>{`
+        @media (min-width: 1024px) {
+          .lg-flex { display: flex !important; }
+          .lg-hidden { display: none !important; }
+        }
+        @media (max-width: 767px) {
+          .hidden-mobile { display: none !important; }
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+      `}</style>
     </div>
   );
 };
