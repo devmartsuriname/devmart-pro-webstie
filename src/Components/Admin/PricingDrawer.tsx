@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { X, Loader2, Plus, Trash2 } from 'lucide-react';
-import { SlugInput } from './SlugInput';
+import SlugInput from './SlugInput';
 
 const pricingSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -254,14 +254,27 @@ const PricingDrawer = ({ isOpen, onClose, planId }: PricingDrawerProps) => {
                 )}
               </div>
 
-              <SlugInput
-                value={watch('slug') || ''}
-                onChange={(value) => setValue('slug', value, { shouldDirty: true })}
-                onGenerate={(title) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}
-                sourceValue={watch('title')}
-                error={errors.slug?.message}
-                checkUnique={checkSlugUnique}
-              />
+              <div style={{ marginBottom: '24px' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#f1f5f9', marginBottom: '8px' }}>
+                  Slug *
+                </label>
+                <input
+                  {...register('slug')}
+                  style={{
+                    width: '100%',
+                    padding: '12px 16px',
+                    background: 'rgba(15, 23, 42, 0.6)',
+                    border: `1px solid ${errors.slug ? '#ef4444' : 'rgba(51, 65, 85, 0.5)'}`,
+                    borderRadius: '10px',
+                    color: '#f1f5f9',
+                    fontSize: '14px',
+                    outline: 'none',
+                  }}
+                />
+                {errors.slug && (
+                  <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>{errors.slug.message}</p>
+                )}
+              </div>
 
               <div style={{ marginBottom: '24px' }}>
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#f1f5f9', marginBottom: '8px' }}>
