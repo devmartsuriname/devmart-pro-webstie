@@ -227,26 +227,28 @@ const ServiceFormPage = () => {
     );
   }
 
-  const inputClass = "w-full px-4 py-2.5 bg-slate-800/50 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all";
+  const inputClass = "admin-input";
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6 pb-8">
+    <div className="max-w-5xl mx-auto space-y-8 pb-12">
       {/* Sticky Header */}
-      <div className="sticky top-0 z-20 bg-slate-950/95 backdrop-blur-sm border-b border-slate-800/50 -mx-6 px-6 py-4 mb-6">
+      <div className="sticky top-0 z-20 bg-[hsl(var(--admin-bg-base))]/95 backdrop-blur-md border-b border-[hsl(var(--admin-border-subtle))] shadow-[var(--admin-shadow-sm)] -mx-6 px-6 py-4 mb-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate('/admin/services')}
-              className="p-2 text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 rounded-lg transition-all"
+              className="p-2.5 text-[hsl(var(--admin-text-muted))] hover:text-[hsl(var(--admin-text-primary))] hover:bg-[hsl(var(--admin-bg-hover))] rounded-lg transition-all duration-200"
             >
               <ArrowLeft className="h-5 w-5" />
             </button>
             <div>
-              <h1 className="text-2xl font-bold text-slate-100 flex items-center gap-3">
-                {id ? 'Edit Service' : 'New Service'}
+              <div className="flex items-center gap-3">
+                <h1 className="text-2xl font-bold text-[hsl(var(--admin-text-primary))] tracking-tight">
+                  {id ? 'Edit Service' : 'New Service'}
+                </h1>
                 <SaveIndicator status={saveStatus} lastSaved={lastSaved} />
-              </h1>
-              <p className="text-sm text-slate-400 mt-1">
+              </div>
+              <p className="text-sm text-[hsl(var(--admin-text-muted))] mt-0.5">
                 {id ? 'Update service details and content' : 'Create a new service offering'}
               </p>
             </div>
@@ -256,25 +258,26 @@ const ServiceFormPage = () => {
             type="submit"
             form="service-form"
             disabled={loading}
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-500 transition-all disabled:opacity-50 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30"
+            className="admin-btn-primary"
           >
             <Save className="h-4 w-4" />
-            {loading ? 'Saving...' : id ? 'Update' : 'Create'}
+            {loading ? 'Saving...' : id ? 'Update Service' : 'Create Service'}
           </button>
         </div>
       </div>
 
       {/* Quick Actions */}
       {id && (
-        <div className="flex items-center gap-2 p-3 bg-slate-900/50 rounded-xl border border-slate-800/50 backdrop-blur-sm">
-          <div className="flex items-center gap-2 flex-1">
-            <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">Quick Actions:</span>
+        <div className="flex items-center gap-3 p-4 admin-card backdrop-blur-sm">
+          <div className="flex items-center gap-3 flex-1">
+            <span className="text-xs font-semibold text-[hsl(var(--admin-text-muted))] uppercase tracking-wider">Status</span>
+            <div className="h-4 w-px bg-[hsl(var(--admin-border))]"></div>
             {currentStatus === 'published' ? (
               <>
                 <button
                   type="button"
                   onClick={() => handleStatusChange('draft')}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-300 bg-slate-800/80 hover:bg-slate-700 rounded-lg transition-all"
+                  className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-medium text-[hsl(var(--admin-text-secondary))] bg-[hsl(var(--admin-bg-elevated))] hover:bg-[hsl(var(--admin-bg-hover))] border border-[hsl(var(--admin-border))] rounded-lg transition-all duration-200"
                 >
                   <EyeOff className="h-3.5 w-3.5" />
                   Unpublish
@@ -282,7 +285,7 @@ const ServiceFormPage = () => {
                 <button
                   type="button"
                   onClick={() => handleStatusChange('paused')}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-amber-300 bg-amber-600/10 hover:bg-amber-600/20 rounded-lg transition-all"
+                  className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-medium text-amber-400 bg-[hsl(var(--admin-warning-soft))] hover:bg-amber-500/20 border border-amber-500/30 rounded-lg transition-all duration-200"
                 >
                   <Pause className="h-3.5 w-3.5" />
                   Pause
@@ -292,7 +295,7 @@ const ServiceFormPage = () => {
               <button
                 type="button"
                 onClick={() => handleStatusChange('published')}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-emerald-300 bg-emerald-600/10 hover:bg-emerald-600/20 rounded-lg transition-all"
+                className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-medium text-emerald-400 bg-[hsl(var(--admin-success-soft))] hover:bg-emerald-500/20 border border-emerald-500/30 rounded-lg transition-all duration-200"
               >
                 <Eye className="h-3.5 w-3.5" />
                 Resume
@@ -301,10 +304,10 @@ const ServiceFormPage = () => {
               <button
                 type="button"
                 onClick={() => handleStatusChange('published')}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-emerald-300 bg-emerald-600/10 hover:bg-emerald-600/20 rounded-lg transition-all"
+                className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-medium text-emerald-400 bg-[hsl(var(--admin-success-soft))] hover:bg-emerald-500/20 border border-emerald-500/30 rounded-lg transition-all duration-200"
               >
                 <Eye className="h-3.5 w-3.5" />
-                Publish
+                Publish Now
               </button>
             )}
           </div>
@@ -314,7 +317,7 @@ const ServiceFormPage = () => {
               href={`/services/${slugValue}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-300 bg-blue-600/10 hover:bg-blue-600/20 rounded-lg transition-all"
+              className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-medium text-[hsl(var(--admin-primary))] bg-[hsl(var(--admin-primary-soft))] hover:bg-blue-500/15 border border-blue-500/30 rounded-lg transition-all duration-200"
             >
               <ExternalLink className="h-3.5 w-3.5" />
               Preview
@@ -412,7 +415,7 @@ const ServiceFormPage = () => {
                       setNewFeature({ title: '', description: '' });
                     }
                   }}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition-all shadow-lg shadow-blue-500/20"
+                  className="flex-shrink-0 admin-btn-primary"
                 >
                   <Plus className="h-4 w-4" />
                 </button>
@@ -421,17 +424,17 @@ const ServiceFormPage = () => {
               {featuresValue.length > 0 && (
                 <div className="space-y-2">
                   {featuresValue.map((feature, index) => (
-                    <div key={index} className="flex items-start gap-2 p-3 bg-slate-800/30 border border-slate-700/30 rounded-lg group hover:border-slate-600/50 transition-all">
-                      <div className="flex-1">
-                        <div className="font-medium text-slate-100 text-sm">{feature.title}</div>
+                    <div key={index} className="flex items-start gap-3 p-4 bg-[hsl(var(--admin-bg-elevated))] border border-[hsl(var(--admin-border))] rounded-lg group hover:border-[hsl(var(--admin-border-hover))] hover:shadow-[var(--admin-shadow-sm)] transition-all duration-200">
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium text-[hsl(var(--admin-text-primary))] text-sm">{feature.title}</div>
                         {feature.description && (
-                          <div className="text-xs text-slate-400 mt-1">{feature.description}</div>
+                          <div className="text-xs text-[hsl(var(--admin-text-muted))] mt-1">{feature.description}</div>
                         )}
                       </div>
                       <button
                         type="button"
                         onClick={() => setValue('features', featuresValue.filter((_, i) => i !== index), { shouldDirty: true })}
-                        className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded transition-all opacity-0 group-hover:opacity-100"
+                        className="flex-shrink-0 p-2 text-[hsl(var(--admin-text-muted))] hover:text-[hsl(var(--admin-error))] hover:bg-[hsl(var(--admin-error-soft))] rounded-lg transition-all duration-200 opacity-0 group-hover:opacity-100"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>

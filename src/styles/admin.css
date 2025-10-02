@@ -1,113 +1,147 @@
-/* Admin CMS Dark Theme Design System */
+/* Professional Admin Design System */
 
 :root.dark {
-  /* Brand Colors (HSL) */
-  --admin-brand-1: 217 91% 60%; /* #3b82f6 blue */
-  --admin-brand-2: 20 95% 53%; /* #f97316 orange */
+  /* Brand Colors */
+  --admin-primary: 217 91% 60%;
+  --admin-primary-hover: 217 91% 55%;
+  --admin-primary-soft: 217 91% 60% / 0.1;
   
-  /* Background Colors */
-  --admin-bg-base: 222 47% 11%; /* #0f172a slate-950 */
-  --admin-bg-surface: 215 28% 17%; /* slate-900 */
-  --admin-bg-surface-elevated: 215 20% 23%; /* slate-800 */
-  --admin-bg-hover: 215 20% 23% / 0.5; /* slate-800/50 */
+  /* Backgrounds */
+  --admin-bg-base: 222 47% 11%;
+  --admin-bg-card: 217 33% 14%;
+  --admin-bg-elevated: 217 33% 17%;
+  --admin-bg-hover: 217 33% 20%;
+  --admin-bg-input: 217 33% 12%;
   
-  /* Text Colors */
-  --admin-text-primary: 210 20% 98%; /* slate-100 */
-  --admin-text-secondary: 215 16% 47%; /* slate-400 */
-  --admin-text-muted: 215 14% 34%; /* slate-500 */
+  /* Borders */
+  --admin-border-subtle: 217 20% 20%;
+  --admin-border: 217 20% 24%;
+  --admin-border-hover: 217 30% 30%;
   
-  /* Border Colors */
-  --admin-border: 215 19% 35%; /* slate-700 */
-  --admin-border-elevated: 215 25% 27%; /* slate-800 */
+  /* Text */
+  --admin-text-primary: 210 40% 98%;
+  --admin-text-secondary: 217 15% 65%;
+  --admin-text-muted: 217 15% 45%;
+  --admin-text-placeholder: 217 15% 35%;
   
-  /* Status Colors */
-  --admin-success: 142 71% 45%; /* green-600 */
-  --admin-warning: 38 92% 50%; /* amber-500 */
-  --admin-error: 347 77% 50%; /* rose-600 */
-  --admin-info: 199 89% 48%; /* cyan-600 */
+  /* Status */
+  --admin-success: 142 76% 45%;
+  --admin-success-soft: 142 76% 45% / 0.15;
+  --admin-warning: 38 92% 50%;
+  --admin-warning-soft: 38 92% 50% / 0.15;
+  --admin-error: 0 84% 60%;
+  --admin-error-soft: 0 84% 60% / 0.15;
+  --admin-info: 199 89% 48%;
+  --admin-info-soft: 199 89% 48% / 0.15;
   
   /* Shadows */
-  --admin-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3);
-  --admin-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+  --admin-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+  --admin-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -1px rgb(0 0 0 / 0.3);
+  --admin-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.6), 0 4px 6px -2px rgb(0 0 0 / 0.4);
+  --admin-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.7), 0 10px 10px -5px rgb(0 0 0 / 0.4);
+  --admin-shadow-glow: 0 0 20px rgb(59 130 246 / 0.3);
 }
 
 :root.light {
-  --admin-brand-1: 217 91% 60%;
-  --admin-brand-2: 20 95% 53%;
+  --admin-primary: 217 91% 60%;
+  --admin-primary-hover: 217 91% 55%;
+  --admin-primary-soft: 217 91% 60% / 0.1;
   --admin-bg-base: 0 0% 100%;
-  --admin-bg-surface: 210 20% 98%;
-  --admin-bg-surface-elevated: 214 32% 91%;
-  --admin-bg-hover: 214 32% 91% / 0.5;
+  --admin-bg-card: 210 20% 98%;
+  --admin-bg-elevated: 210 20% 96%;
+  --admin-bg-hover: 210 20% 94%;
+  --admin-bg-input: 0 0% 100%;
+  --admin-border-subtle: 214 32% 91%;
+  --admin-border: 214 32% 85%;
+  --admin-border-hover: 214 32% 75%;
   --admin-text-primary: 222 47% 11%;
   --admin-text-secondary: 215 16% 47%;
   --admin-text-muted: 215 20% 65%;
-  --admin-border: 214 32% 91%;
-  --admin-border-elevated: 215 28% 85%;
-  --admin-success: 142 71% 45%;
+  --admin-text-placeholder: 215 20% 75%;
+  --admin-success: 142 76% 45%;
+  --admin-success-soft: 142 76% 45% / 0.15;
   --admin-warning: 38 92% 50%;
-  --admin-error: 347 77% 50%;
+  --admin-warning-soft: 38 92% 50% / 0.15;
+  --admin-error: 0 84% 60%;
+  --admin-error-soft: 0 84% 60% / 0.15;
   --admin-info: 199 89% 48%;
-  --admin-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
-  --admin-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --admin-info-soft: 199 89% 48% / 0.15;
+  --admin-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --admin-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  --admin-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+  --admin-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+  --admin-shadow-glow: 0 0 20px rgb(59 130 246 / 0.2);
 }
 
-/* Admin-specific utilities */
+/* Professional Utility Classes */
 .admin-card {
-  @apply bg-[hsl(var(--admin-bg-surface))] border border-[hsl(var(--admin-border))] rounded-2xl shadow-[var(--admin-shadow)];
+  @apply bg-[hsl(var(--admin-bg-card))] border border-[hsl(var(--admin-border-subtle))];
+  @apply rounded-xl shadow-[var(--admin-shadow)];
 }
 
 .admin-input {
-  @apply bg-[hsl(var(--admin-bg-surface-elevated))] border border-[hsl(var(--admin-border))] text-[hsl(var(--admin-text-primary))] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--admin-brand-1))]/50 focus:border-[hsl(var(--admin-brand-1))];
+  @apply w-full px-3.5 py-2.5 bg-[hsl(var(--admin-bg-input))] border border-[hsl(var(--admin-border))];
+  @apply text-[hsl(var(--admin-text-primary))] placeholder:text-[hsl(var(--admin-text-placeholder))];
+  @apply rounded-lg text-sm transition-all duration-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-[hsl(var(--admin-primary))]/40 focus:border-[hsl(var(--admin-primary))];
+  @apply hover:border-[hsl(var(--admin-border-hover))];
+}
+
+.admin-input:disabled {
+  @apply opacity-50 cursor-not-allowed;
 }
 
 .admin-label {
-  @apply block text-sm font-medium text-[hsl(var(--admin-text-secondary))] mb-1;
+  @apply block text-sm font-medium text-[hsl(var(--admin-text-secondary))] mb-2;
 }
 
 .admin-btn-primary {
-  @apply bg-[hsl(var(--admin-brand-1))] hover:bg-[hsl(var(--admin-brand-1))]/80 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[hsl(var(--admin-brand-1))]/50;
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg;
+  @apply bg-[hsl(var(--admin-primary))] hover:bg-[hsl(var(--admin-primary-hover))];
+  @apply text-white text-sm font-medium;
+  @apply shadow-[var(--admin-shadow-sm)] hover:shadow-[var(--admin-shadow)];
+  @apply transition-all duration-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-[hsl(var(--admin-primary))]/40 focus:ring-offset-2 focus:ring-offset-[hsl(var(--admin-bg-base))];
+  @apply disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
 .admin-btn-secondary {
-  @apply bg-[hsl(var(--admin-bg-surface-elevated))] border border-[hsl(var(--admin-border))] text-[hsl(var(--admin-text-primary))] hover:bg-[hsl(var(--admin-bg-surface-elevated))]/80 px-4 py-2 rounded-lg text-sm font-medium transition-colors;
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg;
+  @apply bg-[hsl(var(--admin-bg-elevated))] hover:bg-[hsl(var(--admin-bg-hover))];
+  @apply border border-[hsl(var(--admin-border))];
+  @apply text-[hsl(var(--admin-text-primary))] text-sm font-medium;
+  @apply transition-all duration-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-[hsl(var(--admin-primary))]/20;
+  @apply disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.admin-btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg;
+  @apply text-[hsl(var(--admin-text-secondary))] hover:text-[hsl(var(--admin-text-primary))];
+  @apply hover:bg-[hsl(var(--admin-bg-hover))];
+  @apply text-sm font-medium transition-all duration-200;
 }
 
 .admin-btn-destructive {
-  @apply bg-[hsl(var(--admin-error))] hover:bg-[hsl(var(--admin-error))]/80 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors;
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg;
+  @apply bg-[hsl(var(--admin-error))] hover:bg-[hsl(var(--admin-error))]/90;
+  @apply text-white text-sm font-medium;
+  @apply shadow-[var(--admin-shadow-sm)] hover:shadow-[var(--admin-shadow)];
+  @apply transition-all duration-200;
+  @apply disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
-.admin-table-header {
-  @apply bg-[hsl(var(--admin-bg-surface-elevated))] text-[hsl(var(--admin-text-secondary))] sticky top-0 z-10;
-}
-
-.admin-table-row {
-  @apply hover:bg-[hsl(var(--admin-bg-hover))] transition-colors border-b border-[hsl(var(--admin-border))];
-}
-
-.admin-sidebar-link {
-  @apply flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors text-[hsl(var(--admin-text-secondary))] hover:bg-[hsl(var(--admin-bg-surface-elevated))] hover:text-[hsl(var(--admin-text-primary))];
-}
-
-.admin-sidebar-link-active {
-  @apply bg-[hsl(var(--admin-bg-surface-elevated))] text-[hsl(var(--admin-brand-1))] font-semibold;
-}
-
-/* Skeleton animations */
 @keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
 }
 
 .admin-skeleton {
   background: linear-gradient(
     90deg,
-    hsl(var(--admin-bg-surface-elevated)) 0%,
+    hsl(var(--admin-bg-elevated)) 0%,
     hsl(var(--admin-bg-hover)) 50%,
-    hsl(var(--admin-bg-surface-elevated)) 100%
+    hsl(var(--admin-bg-elevated)) 100%
   );
   background-size: 1000px 100%;
   animation: shimmer 2s infinite;
