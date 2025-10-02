@@ -52,13 +52,13 @@ const SlugInput = ({ titleField, value, onChange, checkUnique, currentId }: Slug
             setManuallyEdited(true);
             onChange(slugify(e.target.value));
           }}
-          className="admin-input flex-1"
+          className="flex-1 px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           placeholder="auto-generated-slug"
         />
         <button
           type="button"
           onClick={handleReset}
-          className="p-2 text-[hsl(var(--admin-text-secondary))] hover:text-[hsl(var(--admin-text-primary))] hover:bg-[hsl(var(--admin-bg-surface-elevated))] rounded-lg transition-colors"
+          className="p-2 text-slate-400 hover:text-slate-100 hover:bg-slate-800 rounded-lg transition-colors"
           title="Reset to auto-generated"
         >
           <RefreshCw className="h-4 w-4" />
@@ -66,15 +66,15 @@ const SlugInput = ({ titleField, value, onChange, checkUnique, currentId }: Slug
       </div>
       
       {isChecking && (
-        <p className="text-xs text-[hsl(var(--admin-text-muted))]">Checking availability...</p>
+        <p className="text-xs text-slate-500">Checking availability...</p>
       )}
       
       {isUnique === false && (
-        <p className="text-xs text-[hsl(var(--admin-error))]">This slug is already in use</p>
+        <p className="text-xs text-rose-400">This slug is already in use</p>
       )}
       
       {isUnique === true && (
-        <p className="text-xs text-[hsl(var(--admin-success))]">Slug is available</p>
+        <p className="text-xs text-emerald-400">Slug is available</p>
       )}
     </div>
   );

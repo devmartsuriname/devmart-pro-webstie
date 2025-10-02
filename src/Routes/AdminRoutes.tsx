@@ -5,6 +5,7 @@ import ResetPassword from '@/Pages/Admin/ResetPassword';
 import ProtectedRoute from '@/Components/Admin/ProtectedRoute';
 import Dashboard from '@/Pages/Admin/Dashboard';
 import Services from '@/Pages/Admin/Services';
+import ServiceForm from '@/Pages/Admin/ServiceForm';
 import Projects from '@/Pages/Admin/Projects';
 import Blog from '@/Pages/Admin/Blog';
 import Pricing from '@/Pages/Admin/Pricing';
@@ -40,6 +41,22 @@ export const adminRoutes = [
         element: (
           <ProtectedRoute requiredRole={['admin', 'editor']}>
             <Services />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'services/new',
+        element: (
+          <ProtectedRoute requiredRole={['admin', 'editor']}>
+            <ServiceForm />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'services/:id/edit',
+        element: (
+          <ProtectedRoute requiredRole={['admin', 'editor']}>
+            <ServiceForm />
           </ProtectedRoute>
         ),
       },

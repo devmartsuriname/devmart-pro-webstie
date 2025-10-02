@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Plus, Edit, Trash2, Eye, EyeOff, Pause, Play, ExternalLink } from 'lucide-react';
 import StatusBadge from '@/Components/Admin/StatusBadge';
 import ConfirmDialog from '@/Components/Admin/ConfirmDialog';
-import ServiceDrawer from '@/Components/Admin/ServiceDrawer';
 import SearchFilter from '@/Components/Admin/SearchFilter';
 import BulkActions from '@/Components/Admin/BulkActions';
 
@@ -19,11 +19,10 @@ type Service = {
 };
 
 const Services = () => {
+  const navigate = useNavigate();
   const [services, setServices] = useState<Service[]>([]);
   const [filteredServices, setFilteredServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [editingService, setEditingService] = useState<string | null>(null);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState<Record<string, string>>({
@@ -210,19 +209,11 @@ const Services = () => {
   };
 
   const handleEdit = (service: Service) => {
-    setEditingService(service.id);
-    setDrawerOpen(true);
+    navigate(`/admin/services/${service.id}/edit`);
   };
 
   const handleCreate = () => {
-    setEditingService(null);
-    setDrawerOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setDrawerOpen(false);
-    setEditingService(null);
-    fetchServices();
+    navigate('/admin/services/new');
   };
 
   // Get unique categories for filter
@@ -468,12 +459,6 @@ const Services = () => {
           </div>
         )}
       </div>
-
-      <ServiceDrawer
-        isOpen={drawerOpen}
-        onClose={handleDrawerClose}
-        serviceId={editingService}
-      />
 
       <ConfirmDialog
         isOpen={deleteDialog.isOpen}
