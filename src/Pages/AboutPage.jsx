@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet";
 import About2 from "../Components/About/About2";
-import Breadcrumb from "../Components/Common/Breadcrumb";
+import Breadcrumb from "../Components/Common/BreadCumb";
 import Counter3 from "../Components/Counter/Counter3";
 import Team2 from "../Components/Team/Team2";
 import Testimonial3 from "../Components/Testimonial/Testimonial3";
