@@ -1,24 +1,52 @@
-import { Navigate } from 'react-router-dom';
+import AdminLayout from '@/Components/Admin/AdminLayout';
+import AdminLogin from '@/Pages/AdminLogin';
+import ProtectedRoute from '@/Components/Admin/ProtectedRoute';
+import Dashboard from '@/Pages/Admin/Dashboard';
 import Services from '@/Pages/Admin/Services';
 import Projects from '@/Pages/Admin/Projects';
 import Blog from '@/Pages/Admin/Blog';
 
-// Temporary placeholder until full admin rebuild
 export const adminRoutes = [
   {
+    path: '/admin/login',
+    element: <AdminLogin />,
+  },
+  {
     path: '/admin',
-    element: <Navigate to="/admin/services" replace />,
-  },
-  {
-    path: '/admin/services',
-    element: <Services />,
-  },
-  {
-    path: '/admin/projects',
-    element: <Projects />,
-  },
-  {
-    path: '/admin/blog',
-    element: <Blog />,
+    element: (
+      <ProtectedRoute>
+        <AdminLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      {
+        index: true,
+        element: <Dashboard />,
+      },
+      {
+        path: 'services',
+        element: (
+          <ProtectedRoute requiredRole={['admin', 'editor']}>
+            <Services />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'projects',
+        element: (
+          <ProtectedRoute requiredRole={['admin', 'editor']}>
+            <Projects />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'blog',
+        element: (
+          <ProtectedRoute requiredRole={['admin', 'editor', 'author']}>
+            <Blog />
+          </ProtectedRoute>
+        ),
+      },
+    ],
   },
 ];
