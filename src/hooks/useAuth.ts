@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
-export type AppRole = 'admin' | 'editor' | 'author' | 'viewer';
+export type AppRole = 'super_admin' | 'admin' | 'editor' | 'author' | 'viewer';
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
@@ -50,8 +50,9 @@ export function useAuth() {
         .from('user_roles')
         .select('role')
         .eq('user_id', userId)
+        .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       
@@ -104,7 +105,7 @@ export function useAuth() {
     return role === requiredRole;
   };
 
-  const isAdminOrEditor = () => hasRole(['admin', 'editor']);
+  const isAdminOrEditor = () => hasRole(['super_admin', 'admin', 'editor']);
 
   return {
     user,
