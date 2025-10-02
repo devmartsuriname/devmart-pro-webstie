@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { X, Plus, Trash2 } from 'lucide-react';
+import { X, Plus, Trash2, Eye, EyeOff, Pause, ExternalLink } from 'lucide-react';
 import SlugInput from './SlugInput';
 import GalleryInput from './GalleryInput';
+import SaveIndicator from './SaveIndicator';
 import { useAuth } from '@/hooks/useAuth';
 
 const serviceSchema = z.object({
@@ -44,6 +45,8 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
   const [initialLoading, setInitialLoading] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [newFeature, setNewFeature] = useState({ title: '', description: '' });
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
 
   const { register, handleSubmit, formState: { errors, isDirty }, reset, watch, setValue } = useForm<ServiceForm>({
     resolver: zodResolver(serviceSchema),
@@ -146,6 +149,50 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
     }
   };
 
+  // Autosave function
+  const autoSave = useCallback(
+    async (data: ServiceForm) => {
+      if (!serviceId) return; // Only autosave for existing services
+      
+      setSaveStatus('saving');
+      
+      try {
+        const payload = {
+          ...data,
+          published_at: data.status === 'published' ? new Date().toISOString() : null,
+          updated_by: user?.id,
+        };
+
+        const { error } = await supabase
+          .from('services')
+          .update(payload)
+          .eq('id', serviceId);
+
+        if (error) throw error;
+        
+        setSaveStatus('saved');
+        setLastSaved(new Date());
+        setHasUnsavedChanges(false);
+      } catch (error: any) {
+        setSaveStatus('error');
+        console.error('Autosave failed:', error);
+      }
+    },
+    [serviceId, user?.id]
+  );
+
+  // Debounced autosave
+  useEffect(() => {
+    if (!isDirty || !serviceId) return;
+    
+    const timeout = setTimeout(() => {
+      const currentData = watch();
+      autoSave(currentData as ServiceForm);
+    }, 800);
+
+    return () => clearTimeout(timeout);
+  }, [watch(), isDirty, serviceId, autoSave]);
+
   const onSubmit = async (data: ServiceForm) => {
     setLoading(true);
     
@@ -183,6 +230,16 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
     }
   };
 
+  const handleStatusChange = async (newStatus: ServiceForm['status']) => {
+    setValue('status', newStatus, { shouldDirty: true });
+    if (serviceId) {
+      const currentData = watch();
+      await autoSave({ ...currentData, status: newStatus } as ServiceForm);
+    }
+  };
+
+  const currentStatus = watch('status');
+
   if (!isOpen) return null;
 
   return (
@@ -192,17 +249,78 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
       <div className="absolute right-0 top-0 h-full w-full max-w-2xl bg-[hsl(var(--admin-bg-surface))] border-l border-[hsl(var(--admin-border))] shadow-[var(--admin-shadow-lg)] animate-slide-in-right">
         <form onSubmit={handleSubmit(onSubmit)} className="h-full flex flex-col">
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-[hsl(var(--admin-border-elevated))]">
-            <h2 className="text-lg font-semibold text-[hsl(var(--admin-text-primary))]">
-              {serviceId ? 'Edit Service' : 'New Service'}
-            </h2>
-            <button
-              type="button"
-              onClick={handleClose}
-              className="p-2 text-[hsl(var(--admin-text-secondary))] hover:text-[hsl(var(--admin-text-primary))] hover:bg-[hsl(var(--admin-bg-surface-elevated))] rounded-lg transition-colors"
-            >
-              <X className="h-5 w-5" />
-            </button>
+          <div className="px-6 py-4 border-b border-[hsl(var(--admin-border-elevated))]">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-lg font-semibold text-[hsl(var(--admin-text-primary))]">
+                {serviceId ? 'Edit Service' : 'New Service'}
+              </h2>
+              <div className="flex items-center gap-3">
+                <SaveIndicator status={saveStatus} lastSaved={lastSaved} />
+                <button
+                  type="button"
+                  onClick={handleClose}
+                  className="p-2 text-[hsl(var(--admin-text-secondary))] hover:text-[hsl(var(--admin-text-primary))] hover:bg-[hsl(var(--admin-bg-surface-elevated))] rounded-lg transition-colors"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+            
+            {/* Status Actions */}
+            {serviceId && (
+              <div className="flex items-center gap-2">
+                {currentStatus === 'published' ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => handleStatusChange('draft')}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-300 bg-slate-700 border border-slate-600 rounded-lg hover:bg-slate-600 transition-colors"
+                    >
+                      <EyeOff className="h-3.5 w-3.5" />
+                      Unpublish
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleStatusChange('paused')}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-amber-300 bg-amber-600/20 border border-amber-700/40 rounded-lg hover:bg-amber-600/30 transition-colors"
+                    >
+                      <Pause className="h-3.5 w-3.5" />
+                      Pause
+                    </button>
+                  </>
+                ) : currentStatus === 'paused' ? (
+                  <button
+                    type="button"
+                    onClick={() => handleStatusChange('published')}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-emerald-300 bg-emerald-600/20 border border-emerald-700/40 rounded-lg hover:bg-emerald-600/30 transition-colors"
+                  >
+                    <Eye className="h-3.5 w-3.5" />
+                    Resume
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => handleStatusChange('published')}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-emerald-300 bg-emerald-600/20 border border-emerald-700/40 rounded-lg hover:bg-emerald-600/30 transition-colors"
+                  >
+                    <Eye className="h-3.5 w-3.5" />
+                    Publish
+                  </button>
+                )}
+                
+                {slugValue && (
+                  <a
+                    href={`/services/${slugValue}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-300 bg-blue-600/20 border border-blue-700/40 rounded-lg hover:bg-blue-600/30 transition-colors"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    Preview
+                  </a>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Content */}

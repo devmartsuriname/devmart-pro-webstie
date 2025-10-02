@@ -1,4 +1,4 @@
-type Status = 'draft' | 'published' | 'archived';
+type Status = 'draft' | 'published' | 'archived' | 'paused';
 
 interface StatusBadgeProps {
   status: Status;
@@ -24,6 +24,12 @@ const StatusBadge = ({ status, className = '' }: StatusBadgeProps) => {
       text: 'text-amber-300',
       border: 'border-amber-700/40',
       dot: 'bg-amber-500',
+    },
+    paused: {
+      bg: 'bg-orange-600/20',
+      text: 'text-orange-300',
+      border: 'border-orange-700/40',
+      dot: 'bg-orange-500',
     },
   };
 
