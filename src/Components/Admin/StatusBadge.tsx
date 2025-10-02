@@ -1,5 +1,3 @@
-import { cn } from '@/lib/utils';
-
 type Status = 'draft' | 'published' | 'archived';
 
 interface StatusBadgeProps {
@@ -7,22 +5,36 @@ interface StatusBadgeProps {
   className?: string;
 }
 
-const StatusBadge = ({ status, className }: StatusBadgeProps) => {
-  const variants = {
-    draft: 'bg-[hsl(var(--admin-text-muted))]/20 text-[hsl(var(--admin-text-secondary))]',
-    published: 'bg-[hsl(var(--admin-success))]/20 text-[hsl(var(--admin-success))]',
-    archived: 'bg-[hsl(var(--admin-warning))]/20 text-[hsl(var(--admin-warning))]',
+const StatusBadge = ({ status, className = '' }: StatusBadgeProps) => {
+  const statusConfig: Record<Status, { bg: string; text: string; border: string; dot: string }> = {
+    published: {
+      bg: 'bg-emerald-600/20',
+      text: 'text-emerald-300',
+      border: 'border-emerald-700/40',
+      dot: 'bg-emerald-500',
+    },
+    draft: {
+      bg: 'bg-slate-800',
+      text: 'text-slate-300',
+      border: 'border-slate-700',
+      dot: 'bg-slate-500',
+    },
+    archived: {
+      bg: 'bg-amber-600/20',
+      text: 'text-amber-300',
+      border: 'border-amber-700/40',
+      dot: 'bg-amber-500',
+    },
   };
+
+  const config = statusConfig[status] || statusConfig.draft;
 
   return (
     <span
-      className={cn(
-        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize',
-        variants[status],
-        className
-      )}
+      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-semibold ${config.bg} ${config.text} ${config.border} ${className}`}
     >
-      {status}
+      <span className={`h-1.5 w-1.5 rounded-full ${config.dot}`} />
+      {status.charAt(0).toUpperCase() + status.slice(1)}
     </span>
   );
 };

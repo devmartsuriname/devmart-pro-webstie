@@ -3,6 +3,8 @@ import AdminLayout from '@/Components/Admin/AdminLayout';
 import AdminLogin from '@/Pages/AdminLogin';
 import Dashboard from '@/Pages/Admin/Dashboard';
 import Services from '@/Pages/Admin/Services';
+import Projects from '@/Pages/Admin/Projects';
+import Blog from '@/Pages/Admin/Blog';
 
 export const adminRoutes = [
   {
@@ -23,11 +25,11 @@ export const adminRoutes = [
       },
       {
         path: 'projects',
-        element: <div className="p-6">Projects (Coming Soon)</div>,
+        element: <Projects />,
       },
       {
         path: 'blog',
-        element: <div className="p-6">Blog (Coming Soon)</div>,
+        element: <Blog />,
       },
     ],
   },
