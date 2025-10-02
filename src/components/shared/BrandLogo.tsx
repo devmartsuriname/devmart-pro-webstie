@@ -12,8 +12,8 @@ export const BrandLogo = ({ size = 'md' }: BrandLogoProps) => {
   };
 
   return (
-    <div className={`${sizeClasses[size]} rounded-xl bg-gradient-to-br from-brand to-brand-600 flex items-center justify-center shadow-lg`}>
-      <Shield className="w-3/5 h-3/5 text-white" />
+    <div className={`${sizeClasses[size]} rounded-2xl bg-gradient-to-br from-brand via-brand-600 to-secondary flex items-center justify-center shadow-xl shadow-brand/30 ring-2 ring-brand/20 ring-offset-2 ring-offset-bg-dark-elevated`}>
+      <Shield className="w-3/5 h-3/5 text-white drop-shadow-lg" />
     </div>
   );
 };

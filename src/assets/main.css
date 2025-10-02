@@ -10,7 +10,27 @@
 
 @layer base {
   :root {
-    --ink: 230 230 230; /* #e6e6e6 in HSL */
+    /* Admin Theme - Professional Dark Mode */
+    --brand: 251 83 59;           /* Vibrant purple-blue #6366f1 */
+    --brand-600: 243 75 59;       /* Darker brand variant */
+    --secondary: 217 91 60;       /* Cool blue accent */
+    --accent: 280 90 65;          /* Purple accent */
+    --ink: 210 20 98;             /* Almost white text */
+    
+    /* Dark Backgrounds */
+    --bg-dark-base: 222 47 11;    /* Deep slate #0f172a */
+    --bg-dark-elevated: 217 33 17; /* Elevated surface #1e293b */
+    --bg-dark-glass: 222 47 11;   /* Glass morphism base */
+    
+    /* Borders & Dividers */
+    --border-dark: 215 25 27;     /* Subtle border */
+    --border-dark-strong: 215 20 35; /* Stronger border */
+  }
+  
+  /* Dark theme body for admin routes */
+  body.admin-theme {
+    background: hsl(var(--bg-dark-base));
+    color: hsl(var(--ink));
   }
 }
 

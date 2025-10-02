@@ -8,6 +8,22 @@ export default {
   ],
   theme: {
     extend: {
+      colors: {
+        brand: {
+          DEFAULT: 'hsl(var(--brand))',
+          600: 'hsl(var(--brand-600))',
+        },
+        secondary: 'hsl(var(--secondary))',
+        accent: 'hsl(var(--accent))',
+        ink: 'hsl(var(--ink))',
+        'bg-dark-base': 'hsl(var(--bg-dark-base))',
+        'bg-dark-elevated': 'hsl(var(--bg-dark-elevated))',
+        'border-dark': 'hsl(var(--border-dark))',
+        'border-dark-strong': 'hsl(var(--border-dark-strong))',
+      },
+      backdropBlur: {
+        xs: '2px',
+      },
       keyframes: {
         'fade-in': {
           '0%': {
