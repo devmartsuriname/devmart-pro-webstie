@@ -1,10 +1,12 @@
 /* Professional Admin Design System */
 
 :root.dark {
-  /* Brand Colors */
-  --admin-primary: 217 91% 60%;
-  --admin-primary-hover: 217 91% 55%;
-  --admin-primary-soft: 217 91% 60% / 0.1;
+  /* Premium Brand Colors */
+  --admin-brand-1: 28 42% 28%;       /* #60412c - Primary brown */
+  --admin-brand-2: 210 55% 18%;      /* #152642 - Secondary navy */
+  --admin-primary: 28 42% 28%;
+  --admin-primary-hover: 28 42% 23%;
+  --admin-primary-soft: 28 42% 28% / 0.1;
   
   /* Backgrounds */
   --admin-bg-base: 222 47% 11%;
