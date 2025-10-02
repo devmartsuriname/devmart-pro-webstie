@@ -77,16 +77,22 @@ const Dashboard = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((card) => (
           <div
             key={card.title}
-            className="rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-sm hover:border-slate-700 transition-colors"
+            className="group rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-sm hover:border-slate-700 hover:shadow-lg transition-all"
           >
-            <div className="text-sm text-slate-400">{card.title}</div>
-            <div className="mt-2 text-3xl font-semibold text-slate-100">{card.value}</div>
-            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-800">
-              <div className="h-full w-1/2 bg-blue-600" />
+            <div className="flex items-center justify-between mb-3">
+              <div className={`h-10 w-10 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center opacity-90 group-hover:opacity-100 transition-opacity`}>
+                <card.icon className="h-5 w-5 text-white" />
+              </div>
+              <div className="text-xs font-medium text-emerald-400">+12%</div>
+            </div>
+            <div className="text-sm font-medium text-slate-400 mb-1">{card.title}</div>
+            <div className="text-3xl font-bold text-slate-100 mb-3">{card.value}</div>
+            <div className="h-2 w-full overflow-hidden rounded-full bg-slate-800">
+              <div className={`h-full bg-gradient-to-r ${card.gradient} transition-all duration-500`} style={{ width: `${(card.value / 30) * 100}%` }} />
             </div>
           </div>
         ))}

@@ -67,18 +67,18 @@ export function TableCard({
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full table-fixed border-collapse text-sm">
-          <thead className="sticky top-16 z-10 bg-slate-800 text-slate-200">
+          <thead className="sticky top-16 z-10 bg-slate-800/95 backdrop-blur-sm text-slate-200">
             <tr>
               {columns.map((col) => (
                 <th
                   key={col.key}
-                  className={`border-b border-slate-700 px-3 py-2.5 text-left font-medium ${col.className || ''}`}
+                  className={`border-b border-slate-700 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide ${col.className || ''}`}
                 >
                   {col.label}
                 </th>
               ))}
               {renderActions && (
-                <th className="w-32 border-b border-slate-700 px-3 py-2.5 text-right font-medium">
+                <th className="w-36 border-b border-slate-700 px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide">
                   Actions
                 </th>
               )}
@@ -88,18 +88,20 @@ export function TableCard({
             {filtered.map((row, idx) => (
               <tr
                 key={row.id || idx}
-                className="border-b border-slate-800 hover:bg-slate-800/60 transition-colors"
+                className={`border-b border-slate-800 hover:bg-slate-800/50 transition-colors ${
+                  idx % 2 === 0 ? 'bg-slate-900' : 'bg-slate-900/50'
+                }`}
               >
                 {columns.map((col) => (
                   <td
                     key={col.key}
-                    className={`px-3 py-2.5 text-slate-200 truncate ${col.className || ''}`}
+                    className={`px-4 py-3.5 text-slate-200 truncate ${col.className || ''}`}
                   >
                     {col.render ? col.render(row[col.key], row) : String(row[col.key] ?? '-')}
                   </td>
                 ))}
                 {renderActions && (
-                  <td className="px-3 py-2.5 text-right">
+                  <td className="px-4 py-3.5 text-right">
                     {renderActions(row)}
                   </td>
                 )}
@@ -109,9 +111,16 @@ export function TableCard({
               <tr>
                 <td
                   colSpan={columns.length + (renderActions ? 1 : 0)}
-                  className="px-3 py-10 text-center text-slate-400"
+                  className="px-4 py-12 text-center"
                 >
-                  {search ? 'No results found' : 'No data available'}
+                  <div className="text-slate-500 font-medium">
+                    {search ? 'No results found' : 'No data available'}
+                  </div>
+                  {search && (
+                    <div className="text-xs text-slate-600 mt-1">
+                      Try adjusting your search terms
+                    </div>
+                  )}
                 </td>
               </tr>
             )}
@@ -120,11 +129,21 @@ export function TableCard({
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between border-t border-slate-800 p-3 text-xs text-slate-400">
-        <div>Showing {filtered.length} of {data.length} rows</div>
-        <div className="flex items-center gap-2">
-          <span>Rows per page:</span>
-          <button className="rounded-md border border-slate-700 bg-slate-800 px-2 py-1 hover:bg-slate-700">25</button>
+      <div className="flex items-center justify-between border-t border-slate-800 px-4 py-3 text-xs">
+        <div className="text-slate-400">
+          Showing <span className="font-medium text-slate-300">{filtered.length}</span> of{' '}
+          <span className="font-medium text-slate-300">{data.length}</span> rows
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-slate-500">Density:</span>
+          <div className="flex items-center gap-1">
+            <button className="rounded-md border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-slate-300 hover:bg-slate-700 hover:text-slate-100 transition-colors text-xs">
+              Compact
+            </button>
+            <button className="rounded-md border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-slate-300 hover:bg-slate-700 hover:text-slate-100 transition-colors text-xs">
+              Comfort
+            </button>
+          </div>
         </div>
       </div>
     </div>
