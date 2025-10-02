@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import Breadcrumb from "../Components/Common/Breadcrumb";
+import BreadCumb from "../Components/Common/BreadCumb";
 import CaseStudyDetails from "../Components/CaseStudyDetails/CaseStudyDetails";
 import { Helmet } from "react-helmet";
 
@@ -17,13 +17,7 @@ const CaseStudyDetailsPage = () => {
                 <title>{projectName} - Projects | DevMart Pro</title>
                 <meta name="description" content={`Explore our ${projectName} case study. See how we delivered exceptional results for our clients.`} />
             </Helmet>
-            <Breadcrumb
-                title={projectName}
-                items={[
-                    { label: 'Projects', url: '/projects' },
-                    { label: projectName }
-                ]}
-            />
+            <BreadCumb Title={projectName} bgimg="/assets/img/breadcrumb.jpg" />
             <CaseStudyDetails slug={slug} />           
         </div>
     );

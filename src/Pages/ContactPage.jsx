@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import Breadcrumb from "../Components/Common/Breadcrumb";
+import BreadCumb from "../Components/Common/BreadCumb";
 import ContactInfo2 from "../Components/ContactInfo/ContactInfo2";
 
 const ContactPage = () => {
@@ -9,10 +9,7 @@ const ContactPage = () => {
                 <title>Contact Us - DevMart Pro</title>
                 <meta name="description" content="Get in touch with DevMart Pro. Contact our team for inquiries, quotes, or to discuss how we can help your business grow." />
             </Helmet>
-            <Breadcrumb
-                title="Contact Us"
-                items={[{ label: 'Contact Us' }]}
-            />
+            <BreadCumb Title="Contact Us" bgimg="/assets/img/breadcrumb.jpg" />
             <ContactInfo2></ContactInfo2>            
         </div>
     );

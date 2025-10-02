@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import Breadcrumb from "../Components/Common/Breadcrumb";
+import BreadCumb from "../Components/Common/BreadCumb";
 import ServiceDetails from "../Components/ServiceDetails/ServiceDetails";
 import { Helmet } from "react-helmet";
 
@@ -17,13 +17,7 @@ const ServiceDetailsPage = () => {
                 <title>{serviceName} - Services | DevMart Pro</title>
                 <meta name="description" content={`Learn more about our ${serviceName} service. Professional solutions tailored to your business needs.`} />
             </Helmet>
-            <Breadcrumb
-                title={serviceName}
-                items={[
-                    { label: 'Services', url: '/services' },
-                    { label: serviceName }
-                ]}
-            />
+            <BreadCumb Title={serviceName} bgimg="/assets/img/breadcrumb.jpg" />
             <ServiceDetails slug={slug} />       
         </div>
     );

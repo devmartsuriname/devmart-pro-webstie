@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import Breadcrumb from "../Components/Common/Breadcrumb";
+import BreadCumb from "../Components/Common/BreadCumb";
 import Team3 from "../Components/Team/Team3";
 
 const TeamPage = () => {
@@ -9,10 +9,7 @@ const TeamPage = () => {
                 <title>Our Team - DevMart Pro</title>
                 <meta name="description" content="Meet the talented team behind DevMart Pro. Our experts are dedicated to delivering innovative digital solutions." />
             </Helmet>
-            <Breadcrumb
-                title="Our Team"
-                items={[{ label: 'Team' }]}
-            />
+            <BreadCumb Title="Our Team" bgimg="/assets/img/breadcrumb.jpg" />
             <Team3></Team3>       
         </div>
     );
