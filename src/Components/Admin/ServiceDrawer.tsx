@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { X } from 'lucide-react';
+import { X, Plus, Trash2 } from 'lucide-react';
 import SlugInput from './SlugInput';
 import GalleryInput from './GalleryInput';
 import { useAuth } from '@/hooks/useAuth';
@@ -16,10 +16,18 @@ const serviceSchema = z.object({
   short_desc: z.string().max(280).optional(),
   content_richtext: z.string().optional(),
   icon_url: z.string().url().optional().or(z.literal('')),
+  hero_image: z.string().url().optional().or(z.literal('')),
+  price_from: z.number().nullable().optional(),
+  features: z.array(z.object({
+    title: z.string(),
+    description: z.string().optional(),
+  })).optional().default([]),
   gallery_urls: z.array(z.string().url()).optional(),
   status: z.enum(['draft', 'published', 'archived']),
   seo_title: z.string().optional(),
   seo_description: z.string().max(160).optional(),
+  is_active: z.boolean().default(true),
+  order: z.number().default(0),
 });
 
 type ServiceForm = z.infer<typeof serviceSchema>;
@@ -35,18 +43,24 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [newFeature, setNewFeature] = useState({ title: '', description: '' });
 
   const { register, handleSubmit, formState: { errors, isDirty }, reset, watch, setValue } = useForm<ServiceForm>({
     resolver: zodResolver(serviceSchema),
     defaultValues: {
       status: 'draft',
       gallery_urls: [],
+      features: [],
+      is_active: true,
+      order: 0,
+      price_from: null,
     },
   });
 
   const titleValue = watch('title');
   const slugValue = watch('slug');
   const galleryValue = watch('gallery_urls');
+  const featuresValue = watch('features') || [];
 
   useEffect(() => {
     setHasUnsavedChanges(isDirty);
@@ -59,6 +73,10 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
       reset({
         status: 'draft',
         gallery_urls: [],
+        features: [],
+        is_active: true,
+        order: 0,
+        price_from: null,
       });
       setHasUnsavedChanges(false);
     }
@@ -84,10 +102,15 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
         short_desc: data.short_desc || '',
         content_richtext: data.content_richtext || '',
         icon_url: data.icon_url || '',
+        hero_image: data.hero_image || '',
+        price_from: data.price_from,
+        features: data.features || [],
         gallery_urls: data.gallery_urls || [],
         status: data.status,
         seo_title: data.seo_title || '',
         seo_description: data.seo_description || '',
+        is_active: data.is_active ?? true,
+        order: data.order || 0,
       });
       setHasUnsavedChanges(false);
     } catch (error: any) {
@@ -286,6 +309,19 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
                       {...register('icon_url')}
                       type="url"
                       className="admin-input w-full"
+                      placeholder="https://example.com/icon.svg"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="admin-label">
+                      Hero Image
+                    </label>
+                    <input
+                      {...register('hero_image')}
+                      type="url"
+                      className="admin-input w-full"
+                      placeholder="https://example.com/hero.jpg"
                     />
                   </div>
 
@@ -297,6 +333,90 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
                       value={galleryValue || []}
                       onChange={(urls) => setValue('gallery_urls', urls)}
                     />
+                  </div>
+                </section>
+
+                {/* Pricing & Features */}
+                <section className="space-y-4">
+                  <h3 className="text-sm font-semibold text-[hsl(var(--admin-text-primary))] uppercase tracking-wide">
+                    Pricing & Features
+                  </h3>
+                  
+                  <div>
+                    <label className="admin-label">
+                      Price From (₹)
+                    </label>
+                    <input
+                      {...register('price_from', { valueAsNumber: true, setValueAs: v => v === '' ? null : Number(v) })}
+                      type="number"
+                      step="0.01"
+                      className="admin-input w-full"
+                      placeholder="999.00"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="admin-label">
+                      Features
+                    </label>
+                    <div className="space-y-2">
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          placeholder="Feature title"
+                          value={newFeature.title}
+                          onChange={(e) => setNewFeature({ ...newFeature, title: e.target.value })}
+                          className="admin-input flex-1"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Description (optional)"
+                          value={newFeature.description}
+                          onChange={(e) => setNewFeature({ ...newFeature, description: e.target.value })}
+                          className="admin-input flex-1"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (newFeature.title.trim()) {
+                              setValue('features', [...featuresValue, newFeature], { shouldDirty: true });
+                              setNewFeature({ title: '', description: '' });
+                            }
+                          }}
+                          className="px-3 py-2 bg-[hsl(var(--admin-primary))] text-white rounded-lg hover:opacity-90 transition-opacity"
+                        >
+                          <Plus className="h-4 w-4" />
+                        </button>
+                      </div>
+                      
+                      {featuresValue.length > 0 && (
+                        <div className="space-y-2 mt-3">
+                          {featuresValue.map((feature, index) => (
+                            <div key={index} className="flex items-start gap-2 p-3 bg-[hsl(var(--admin-bg-surface-elevated))] rounded-lg">
+                              <div className="flex-1">
+                                <div className="font-medium text-[hsl(var(--admin-text-primary))] text-sm">
+                                  {feature.title}
+                                </div>
+                                {feature.description && (
+                                  <div className="text-xs text-[hsl(var(--admin-text-secondary))] mt-1">
+                                    {feature.description}
+                                  </div>
+                                )}
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setValue('features', featuresValue.filter((_, i) => i !== index), { shouldDirty: true });
+                                }}
+                                className="p-1 text-[hsl(var(--admin-error))] hover:bg-[hsl(var(--admin-bg-surface))] rounded transition-colors"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </section>
 
@@ -333,10 +453,10 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
                   </div>
                 </section>
 
-                {/* Publish */}
+                {/* Publishing */}
                 <section className="space-y-4">
                   <h3 className="text-sm font-semibold text-[hsl(var(--admin-text-primary))] uppercase tracking-wide">
-                    Publish
+                    Publishing
                   </h3>
                   
                   <div>
@@ -351,6 +471,30 @@ const ServiceDrawer = ({ isOpen, onClose, serviceId }: ServiceDrawerProps) => {
                       <option value="published">Published</option>
                       <option value="archived">Archived</option>
                     </select>
+                  </div>
+
+                  <div>
+                    <label className="admin-label">
+                      Display Order
+                    </label>
+                    <input
+                      {...register('order', { valueAsNumber: true })}
+                      type="number"
+                      className="admin-input w-full"
+                      placeholder="0"
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <input
+                      {...register('is_active')}
+                      type="checkbox"
+                      id="is_active"
+                      className="w-4 h-4 rounded border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-bg-surface-elevated))] text-[hsl(var(--admin-primary))] focus:ring-2 focus:ring-[hsl(var(--admin-primary))] focus:ring-offset-0"
+                    />
+                    <label htmlFor="is_active" className="text-sm text-[hsl(var(--admin-text-primary))] cursor-pointer">
+                      Active (visible on frontend)
+                    </label>
                   </div>
                 </section>
               </>
